@@ -345,3 +345,15 @@ translate french strings:
     # game/screens.rpy:1596
     old "Menu"
     new "Menu"
+
+    old "Achievements"
+    new "Succès"
+
+    old "Delete Saves?"
+    new "Supprimer les sauvegardes?"
+
+    old "Delete All Saves"
+    new "Supprimer toutes les sauvegardes"
+
+    old "This option isn’t implemented yet. You can delete save files manually on your system."
+    new "Cette option n'est pas encore implémentée. Vous pouvez supprimer les fichiers de sauvegarde manuellement sur votre système."

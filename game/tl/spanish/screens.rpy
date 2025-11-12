@@ -4,7 +4,7 @@ translate spanish strings:
 
     # game/screens.rpy:32
     old "OK"
-    new "Aceptar"
+    new "Vale"
 
     # game/screens.rpy:275
     old "Back"
@@ -345,3 +345,15 @@ translate spanish strings:
     # game/screens.rpy:1594
     old "Menu"
     new "Menú"
+
+    old "Achievements"
+    new "Logros"
+
+    old "Delete Saves?"
+    new "¿Eliminar datos de guardado?"
+
+    old "Delete All Saves"
+    new "Eliminar Datos Guardados"
+
+    old "This option isn’t implemented yet. You can delete save files manually on your system."
+    new "Esta opción aún no está implementada. Puedes eliminar los archivos de guardado manualmente en tu sistema."

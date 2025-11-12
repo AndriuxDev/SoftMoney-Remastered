@@ -15,8 +15,8 @@ init python:
 define config.check_conflicting_properties = True
 
 ## Define GUI SFX
-define gui.hover_sound = "gui/sfx/hover.ogg"
-define gui.activate_sound = "audio/SFX_Button.ogg"
+define gui.hover_sound = "Audio/SFX_Hover.ogg"
+define gui.activate_sound = "Audio/SFX_Button.ogg"
 
 ################################################################################
 ## GUI Configuration Variables
@@ -101,7 +101,7 @@ define gui.char_menu = "images/harveymenu.png"
 ## a time.
 
 ## The height of the textbox containing dialogue.
-define gui.textbox_height = 278
+define gui.textbox_height = 350
 
 ## The placement of the textbox vertically on the screen. 0.0 is the top, 0.5
 ## is center, and 1.0 is the bottom.
@@ -444,7 +444,7 @@ init python:
         gui.label_text_size = 51
 
         ## Adjust the location of the textbox.
-        gui.textbox_height = 360
+        gui.textbox_height = 350
         gui.name_xpos = 120
         gui.dialogue_xpos = 135
         gui.dialogue_width = 1650

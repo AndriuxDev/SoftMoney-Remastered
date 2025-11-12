@@ -23,16 +23,13 @@ define gui.show_name = False
 
 ## The version of the game.
 
-define config.version = "0.1"
+define config.version = "0.25a"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
 ## triple-quotes, and leave a blank line between paragraphs.
 
-define gui.about = _p("""
-This is a remastered fan-work in the spirit of paper-pepper's SoftMoney. All rights
-reserved to their respective owners. Non-profit proyect.
-""")
+define gui.about = "This is a remastered fan-work in the spirit of paper-pepper's SoftMoney. All rights reserved to their respective owners. Non-profit proyect.\nAchievements for Ren'Py asset pack made by Feniks. You can find it {a=https://feniksdev.itch.io/achievements-for-renpy}here{/a}."
 
 
 ## A short name for the game used for executables and directories in the built
@@ -64,7 +61,7 @@ define config.sample_sound = "SFX_Money.ogg"
 ## the player is at the main menu. This file will continue playing into the
 ## game, until it is stopped or another file is played.
 
-define config.main_menu_music = "TitleSMB.mp3"
+define config.main_menu_music = audio.t0a
 
 
 ## Transitions #################################################################
@@ -75,8 +72,8 @@ define config.main_menu_music = "TitleSMB.mp3"
 
 ## Entering or exiting the game menu.
 
-define config.enter_transition = dissolve
-define config.exit_transition = dissolve
+define config.enter_transition = irisin
+define config.exit_transition = irisout
 
 
 ## Between screens of the game menu.
@@ -122,7 +119,7 @@ define config.window_hide_transition = Dissolve(.2)
 ## Controls the default text speed. The default, 0, is infinite, while any
 ## other number is the number of characters per second to type out.
 
-default preferences.text_cps = 0
+default preferences.text_cps = 40
 
 
 ## The default auto-forward delay. Larger numbers lead to longer waits, with 0

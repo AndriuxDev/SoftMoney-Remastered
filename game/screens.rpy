@@ -25,11 +25,29 @@ init -501 screen name_input(message, ok_action):
         label _(message):
             style "confirm_prompt"
             xalign 0.5
-        input default "" value VariableInputValue("player") length 12 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        input default "" value VariableInputValue("player") length 20 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         hbox:
             xalign 0.5
             spacing 100
             textbutton _("OK") action ok_action
+            textbutton _("Cancel") action Hide("name_input")
+
+init python:
+    def delete_all_saves(confirm=True, delete_persistent=False):
+        import renpy
+
+        if confirm:
+            return
+
+        for slot in renpy.list_saved_games():
+            renpy.unlink_save(slot)
+
+        if delete_persistent:
+            renpy.persistent._clear(True)
+            renpy.save_persistent()
+
+        renpy.notify(_("All save files deleted."))
+
 
 ################################################################################
 ## Styles
@@ -235,7 +253,9 @@ screen choice(items):
 
     vbox:
         for i in items:
-            textbutton i.caption action i.action
+            textbutton i.caption action i.action:
+                activate_sound gui.activate_sound
+                hover_sound gui.hover_sound
 
 
 style choice_vbox is vbox
@@ -272,13 +292,13 @@ screen quick_menu():
             style_prefix "quick"
             style "quick_menu"
 
-            textbutton _("Back") action Rollback()
+            #textbutton _("Back") action Rollback()
             textbutton _("History") action ShowMenu('history')
-            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
-            textbutton _("Auto") action Preference("auto-forward", "toggle")
+            #textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
+            #textbutton _("Auto") action Preference("auto-forward", "toggle")
             textbutton _("Save") action ShowMenu('save')
-            textbutton _("Q.Save") action QuickSave()
-            textbutton _("Q.Load") action QuickLoad()
+            #textbutton _("Q.Save") action QuickSave()
+            #textbutton _("Q.Load") action QuickLoad()
             textbutton _("Prefs") action ShowMenu('preferences')
 
 
@@ -302,6 +322,38 @@ style quick_button:
 
 style quick_button_text:
     properties gui.text_properties("quick_button")
+
+screen ok_screen(message):
+    modal True
+    zorder 100
+
+    # Dark transparent overlay behind the frame
+    add Solid("#00000080")  # 50% black overlay
+
+    frame:
+        align (0.5, 0.5)
+        padding (40, 30)
+        background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
+        xmaximum 600
+        yminimum 200
+
+        vbox:
+            spacing 20
+            xalign 0.5
+
+            text message:
+                xalign 0.5
+                size 28
+                text_align 0.5
+
+            textbutton _("OK"):
+                xalign 0.5
+                # Plays a hover sound and a click sound, then hides the screen
+                action [Play("sound", gui.activate_sound), Hide("ok_screen")]
+                hover_sound gui.hover_sound
+                text_align 0.5
+
+
 
 
 ################################################################################
@@ -330,21 +382,23 @@ screen navigation():
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.5
+        yalign 0.6
 
         spacing gui.navigation_spacing
 
         if main_menu:
 
-            textbutton _("Start") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message="Please enter your name", ok_action=Function(FinishEnterName)))
+            textbutton _("Start") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message="What's your name?", ok_action=Function(FinishEnterName)))
 
-        #else:
+        else:
 
-            #textbutton _("History") action ShowMenu("history")
+            textbutton _("History") action ShowMenu("history")
 
             #textbutton _("Save") action ShowMenu("save")
 
-        #textbutton _("Load") action ShowMenu("load")
+        textbutton _("Load") action ShowMenu("load")
+
+        textbutton _("Achievements") action ShowMenu("achievement_gallery")
 
         textbutton _("Preferences") action ShowMenu("preferences")
 
@@ -871,6 +925,29 @@ screen preferences():
                         textbutton _("Mute All"):
                             action Preference("all mute", "toggle")
                             style "mute_all_button"
+
+                vbox:
+                    label _("Delete Saves?") # NOT WORKING YET
+    
+                    hbox:
+                        textbutton _("Delete All Saves") action [Show("ok_screen", message="This option isn’t implemented yet. You can delete save files manually on your system.")]
+
+screen confirm_delete_saves():
+    modal True
+    zorder 200
+
+    frame:
+        style "confirm_frame"
+
+        vbox:
+            spacing 15
+            label _("Delete all save files?") style "confirm_label"
+            text _("This action cannot be undone.") style "confirm_text"
+
+            hbox:
+                spacing 20
+                textbutton _("Cancel") action Return(False)
+                textbutton _("Delete All") action [Hide("confirm_delete_saves"), Function(delete_all_saves, confirm=False)]
 
 
 style pref_label is gui_label

@@ -60,7 +60,7 @@ label splashscreen:
                         renpy.full_restart()
 
                 "No, keep my progress.":
-                    $ restore_relevant_characters()
+                    pass
 
         python:
             try:
@@ -81,10 +81,19 @@ label splashscreen:
         jump language_select_loop
 
 label language_select_loop:
-    # Loop label: keeps showing until language confirmed
-    if persistent.language:
-        jump after_language_selection
+    play music t5 volume 0.3 fadein 1.0
 
+    # Si ya hay un idioma guardado...
+    if persistent.language:
+
+        # Solo mostrar el disclaimer si aún no se ha mostrado antes
+        if not getattr(persistent, "first_run", False):
+            jump after_language_selection
+        else:
+            # Ya se mostró el disclaimer antes, continuar al juego o menú principal
+            return
+
+    # Si no hay idioma elegido aún, mostrar menú de selección
     menu:
         "Choose your language! / ¡Elige tu idioma! / Choisissez votre langue! / Выберите язык!"
 
@@ -93,10 +102,12 @@ label language_select_loop:
                 "Set language to English?"
                 
                 "Yes":
+                    play sound notif
                     $ persistent.language = "english"
                     "Okay! Harvey's dialogue and other text will now be in English."
                     "You can change this at any time in the options menu."
                     "More languages may be added in the future!"
+                    stop music fadeout 2.0
                 "No":
                     jump language_select_loop
 
@@ -105,10 +116,12 @@ label language_select_loop:
                 "¿Establecer el idioma en Español?"
                 
                 "Sí":
+                    play sound notif
                     $ persistent.language = "spanish"
                     "¡Muy bien! El diálogo de Harvey y otros textos ahora estarán en Español."
                     "Puedes cambiarlo en cualquier momento en el menú de opciones."
                     "¡Es posible que se agreguen más idiomas en el futuro!"
+                    stop music fadeout 2.0
                 "No":
                     jump language_select_loop
 
@@ -117,10 +130,12 @@ label language_select_loop:
                 "Définir la langue en Français?"
                 
                 "Oui":
+                    play sound notif
                     $ persistent.language = "french"
                     "D'accord ! Les dialogues de Harvey et d'autres textes seront désormais en Français."
                     "Vous pouvez changer cela à tout moment dans le menu des options."
                     "D'autres langues pourraient être ajoutées à l'avenir !"
+                    stop music fadeout 2.0
                 "Non":
                     jump language_select_loop
 
@@ -129,10 +144,12 @@ label language_select_loop:
                 "Установить язык Русский?"
 
                 "Да":
+                    play sound notif
                     $ persistent.language = "russian"
                     "Хорошо! Диалоги Харви и другие тексты теперь будут на Русском."
                     "Вы можете изменить это в любое время в меню настроек."
                     "В будущем могут быть добавлены другие языки!"
+                    stop music fadeout 2.0
                 "Нет":
                     jump language_select_loop
 
@@ -141,6 +158,7 @@ label language_select_loop:
             "You must choose a language to proceed."
             "Please pick one of the available options."
             jump language_select_loop
+
 
 label after_language_selection:
     
@@ -217,6 +235,7 @@ label after_language_selection:
     stop music fadeout 1.0
     with Dissolve(3.0)
 
-    show screen main_menu with Dissolve(2.0)
+    ## This line was causing trouble with the main menu!
+    #show screen main_menu with Dissolve(2.0)
 
     return

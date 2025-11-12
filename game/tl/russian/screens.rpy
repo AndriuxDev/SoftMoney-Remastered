@@ -345,3 +345,15 @@ translate russian strings:
     # game/screens.rpy:1596
     old "Menu"
     new "Меню"
+
+    old "Achievements"
+    new "Достижения"
+
+    old "Delete Saves?"
+    new "Удалить сохранения?"
+
+    old "Delete All Saves"
+    new "Удалить все сохранения"
+
+    old "This option isn’t implemented yet. You can delete save files manually on your system."
+    new "Эта опция пока не реализована. Вы можете удалить файлы сохранения вручную в вашей системе."

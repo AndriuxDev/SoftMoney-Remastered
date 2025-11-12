@@ -1,16 +1,17 @@
 ## Music
-define audio.t0 = "audio/TitleSMB.mp3"
+define audio.t0a = "audio/MainMenu.mp3"
+define audio.t0b = "audio/TitleSMB.mp3"
 define audio.t1 = "audio/Dune.mp3"
 define audio.t2 = "audio/Intro.ogg"
 define audio.t3 = "audio/Music Normal.ogg"
 define audio.t4 = "audio/Neutral Ending.ogg"
-define audio.t5 = "audio/Music Normal.ogg"
+define audio.t5 = "audio/LangSelect.mp3"
 define audio.t6 = "audio/ROMVerify.mp3"
 
 ## Sound Effects
 define audio.button = "audio/SFX_Button.ogg"
 define audio.decision = "audio/SFX_Decision.ogg"
-define audio.hbeep = "audio/SFX_Hsopital.ogg"
+define audio.hbeep = "audio/SFX_Hospital.ogg"
 define audio.money = "audio/SFX_Money.ogg"
 define audio.notif = "audio/SFX_Notification.ogg"
 

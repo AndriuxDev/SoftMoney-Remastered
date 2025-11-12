@@ -85,14 +85,14 @@ define myconfig.ACHIEVEMENT_CALLBACK = [
 ## "top_left", "top_right", "bottom_left", "bottom_right"
 ## You may want to use this to ensure any Steam notifications don't conflict
 ## with the position of the built-in notification, if you're using both.
-define achievement.steam_position = None
+define achievement.steam_position = "top_right"
 
 ################################################################################
 ## DEFINING ACHIEVEMENTS
 ################################################################################
 ## Replace this with whatever locked image you want to use as the default
 ## for a locked achievement.
-image locked_achievement = Text("?")
+image locked_achievement = Text("???")
 
 ################################################################################
 ## Start of example achievement declarations and in-game examples.
