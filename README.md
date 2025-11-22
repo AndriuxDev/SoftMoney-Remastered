@@ -1,4 +1,4 @@
-<img width="1334" height="573" alt="logoHD" src="/workspaces/SoftMoney-Remastered/game/images/logoHD.png" />
+<img width="1334" height="573" alt="logoHD" src="game/images/logoHD.png" />
 
 ---
 
