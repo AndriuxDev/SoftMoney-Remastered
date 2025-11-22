@@ -521,6 +521,7 @@ init -999 python in myconfig:
     ACHIEVEMENT_CALLBACK = None
     ## A sound to play when the achievement is granted
     ACHIEVEMENT_SOUND = None
+    COMPLETE_SOUND = None
     ACHIEVEMENT_CHANNEL = "audio"
     ## The text that's shown when an achievement's name or description
     ## is hidden.

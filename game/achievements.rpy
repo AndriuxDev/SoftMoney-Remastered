@@ -55,7 +55,7 @@ define myconfig.ACHIEVEMENT_HIDE_TIME = 1.0
 define myconfig.SHOW_ACHIEVEMENT_POPUPS = True
 ## This can be set to a sound that plays when the achievement popup appears.
 ## None does not play a sound.
-define myconfig.ACHIEVEMENT_SOUND = None # "audio/sfx/achievement.ogg"
+define myconfig.ACHIEVEMENT_SOUND = "audio/SFX_Achievement.mp3" # "audio/sfx/achievement.ogg"
 ## If the sound plays, this sets the channel it will play on. The audio
 ## channel plays on the sfx mixer, and can play overlapping sounds if multiple
 ## achievements are earned at once.
@@ -92,7 +92,7 @@ define achievement.steam_position = "top_right"
 ################################################################################
 ## Replace this with whatever locked image you want to use as the default
 ## for a locked achievement.
-image locked_achievement = Text("???")
+image locked_achievement = "achievements/lockach.png"
 
 ################################################################################
 ## Start of example achievement declarations and in-game examples.
@@ -105,22 +105,22 @@ image locked_achievement = Text("???")
 ## description to be tied to a specific save file, for example).
 ## The order you declare achievements in is the order they will appear in the
 ## achievement gallery, by default.
-define sample_achievement = Achievement(
+define ending1 = Achievement(
     ## The human-readable name, as it'll appear in the popup and in the gallery.
-    name=_("Sample Achievement"),
+    name=_("Hard Worker"),
     ## The id is used for Steam integration, and should match whatever ID
     ## you have set up in the Steam backend (if using).
-    id="sample_achievement",
+    id="hardworker",
     ## Description.
-    description=_("This is a sample achievement."),
+    description=_("Earn $25,000 and get the sad ending."),
     ## The image used in the popup and in the gallery once this achievement
     ## is unlocked.
-    unlocked_image="gui/window_icon.png",
+    unlocked_image="achievements/end1ach.png",
     ## By default all achievements use the "locked_achievement" image (declared
     ## above), but if you wanted to provide a different image, this is how
     ## you would specify it. It's used in the achievement gallery when the
     ## achievement is locked.
-    locked_image="locked_achievement",
+    locked_image="achievements/lockach.png",
     ## All achievements are hide_name=False and hide_description=False by
     ## default, but you can change either to True to hide the name or
     ## description before the achievement is unlocked. See examples 4-7
@@ -130,127 +130,61 @@ define sample_achievement = Achievement(
 )
 ## You can grant an achievement in-game with `$ sample_achievement.grant()`
 
-## Example 2 ###################################################################
-define progress_achievement = Achievement(
-    name=_("Progress Achievement"),
-    id="progress_achievement",
-    description=_("This is an achievement with a progress bar."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=InvertMatrix()),
-    ## To record progress, you need to specify a stat_max. This means you can
-    ## show a progress bar with % completion towards the achievement. It is
-    ## useful if, for example, you have an achievement counting how many
-    ## chapters the player has completed which unlocks when they have seen all
-    ## the chapters.
-    stat_max=12,
-    ## You can also provide a stat_modulo, which means the achievement is only
-    ## updated in the Steam backend every time the stat reaches a multiple of
-    ## the modulo.
-    ## Alternatively, this system also lets you set stat_update_percent instead,
-    ## so if you want it to update every 10% it progresses, you can set
-    # stat_update_percent=10
-    ## This is most useful for achievements with a large number of steps,
-    ## like a general % completion achievement. Maybe there are 600 things to
-    ## complete for the achievement, but obviously 0.1% increments are pretty
-    ## meaningless so you can either set stat_modulo=6 or stat_update_percent=1
-    ## and it will update Steam every 6 steps or every 1%.
-    ## The in-game bar/numbers will still update every increase.
-    ##
-    ## This shows the progress bar in the gallery. This is True by default if
-    ## you have a stat_max, but you can set it to False if you don't want to
-    ## show a bar (but do want to track progress).
-    show_progress_bar=True,
+define ending2 = Achievement(
+    ## The human-readable name, as it'll appear in the popup and in the gallery.
+    name=_("Friendly Collector"),
+    ## The id is used for Steam integration, and should match whatever ID
+    ## you have set up in the Steam backend (if using).
+    id="friendlycollector",
+    ## Description.
+    description=_("Earn $25,000, get all items but the comb and earn the good ending."),
+    ## The image used in the popup and in the gallery once this achievement
+    ## is unlocked.
+    unlocked_image="achievements/end2ach.png",
+    ## By default all achievements use the "locked_achievement" image (declared
+    ## above), but if you wanted to provide a different image, this is how
+    ## you would specify it. It's used in the achievement gallery when the
+    ## achievement is locked.
+    locked_image="achievements/lockach.png",
+    ## All achievements are hide_name=False and hide_description=False by
+    ## default, but you can change either to True to hide the name or
+    ## description before the achievement is unlocked. See examples 4-7
+    ## below for how to do this.
+    hide_name=False,
+    hide_description=False,
 )
-## To update progress towards completion of this achievement, you can use
-# $ progress_achievement.add_progress(1)
-## where 1 is how much progress is added to the stat (so, the first time it
-## is called for the above example it'd be 1/12, the second it'd be 2/12, etc).
-##
-## Alternatively, you can directly set the progress like:
-# $ progress_achievement.progress(5)
-## This will directly set progress to 5, making the above example 5/12 for
-## example. Alternatively, you may want to make use of the built-in "set"
-## functionality, seen below.
 
-## Example 3 ###################################################################
-define set_progress_achievement = Achievement(
-    name=_("Set Progress Achievement"),
-    id="set_progress_achievement",
-    description=_("This is an achievement with progress but no bar."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=HueMatrix(270)),
-    ## This sets a stat to progress towards
-    stat_max=3,
-    show_progress_bar=False, # Don't show the progress bar in the gallery
-    # (though it still has a stat that it tracks)
+define ending3 = Achievement(
+    ## The human-readable name, as it'll appear in the popup and in the gallery.
+    name=_("A Friend Indeed"),
+    ## The id is used for Steam integration, and should match whatever ID
+    ## you have set up in the Steam backend (if using).
+    id="friendindeed",
+    ## Description.
+    description=_("Spend $20,000 in the comb for Harvey and get the best ending."),
+    ## The image used in the popup and in the gallery once this achievement
+    ## is unlocked.
+    unlocked_image="achievements/end3ach.png",
+    ## By default all achievements use the "locked_achievement" image (declared
+    ## above), but if you wanted to provide a different image, this is how
+    ## you would specify it. It's used in the achievement gallery when the
+    ## achievement is locked.
+    locked_image="achievements/lockach.png",
+    ## All achievements are hide_name=False and hide_description=False by
+    ## default, but you can change either to True to hide the name or
+    ## description before the achievement is unlocked. See examples 4-7
+    ## below for how to do this.
+    hide_name=False,
+    hide_description=_("Spend $20,000 in something and get the best ending."),
 )
-## Besides the add_progress and progress methods described above, you can also
-## use the add_set_progress method to add a value to a set that's tied to this
-## achievement. Sets are unique - so if you try to add the same value twice, it
-## only ends up in the set once. This means you don't have to check if something
-## is already in the set before adding it.
-## You can use this to track unique flags towards progressing this achievement.
-## For example, say you add a good, bad, and neutral ending to your game.
-## At those endings, you'd have one of the following lines:
-## $ set_progress_achievement.add_set_progress("good_end")
-## $ set_progress_achievement.add_set_progress("bad_end")
-## $ set_progress_achievement.add_set_progress("neutral_end")
-## When the player has seen all 3 endings, the achievement's set will have 3
-## unique values in it, so the achievement will automatically unlock as soon as
-## they get the third one (it doesn't matter what order they see them in).
-## Note that the set is not limited to the stat_max - you could add 10 unique
-## values to it, but it'll unlock the achievement after it has 3 unique values.
-## This can be helpful if you have, say, 20 collectibles in your game but
-## only want to require 15 of them for the achievement.
-## See the example label after Example 8 for some in-script examples
-## of what this might look like.
 
-## Example 4 ###################################################################
-## This achievement is "hidden", that is, its name and description appear as
-## ??? in the achievement gallery until it is unlocked.
-define hidden_achievement = Achievement(
-    name=_("Hidden Achievement"),
-    id="hidden_achievement",
-    description=_("This hidden achievement hides both the name and description."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=BrightnessMatrix(-1.0)),
+define hiddencomb = Achievement(
+    name=_("A Gift for a Friend"),
+    id="friendgift",
+    description=_("Buy a comb for Harvey with your money."),
+    unlocked_image=Transform("achievements/combach.png"),
     ## The important bit that hides the name and description
     hide_name=True, hide_description=True,
-)
-
-## Example 5 ###################################################################
-define hidden_description = Achievement(
-    name=_("Hidden Description"),
-    id="hidden_description",
-    description=_("This hidden achievement hides only the description."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=SepiaMatrix()),
-    hide_description=True, ## The important bit that hides only the description
-)
-
-## Example 6 ###################################################################
-## This achievement unlocks automatically when the other two hidden achievements
-## are unlocked. This is set up via myconfig.ACHIEVEMENT_CALLBACK earlier in
-## the file.
-define hidden_double_unlock = Achievement(
-    name=_("You found it"),
-    id="hidden3",
-    description=_("This achievement unlocks automatically when the other two hidden achievements are unlocked."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=ContrastMatrix(0.0)),
-    hide_name=True, ## Hide the name
-    ## Besides just setting hide_description=True to set it to "???", you can
-    ## optionally provide your own custom description here, which is only
-    ## shown until the achievement is unlocked (then it shows the regular
-    ## description).
-    hide_description=_("Try unlocking the other two hidden achievements before this one."),
-)
-
-## Example 7 ###################################################################
-## This achievement has a hidden name but not a hidden description.
-define hidden_name_only = Achievement(
-    name=_("Hidden Name"),
-    id="hidden_name_only",
-    description=_("This achievement hides only the name."),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=HueMatrix(90)),
-    # Use a custom name while the achievement is locked
-    hide_name=_("Secret Achievement"),
-    hide_description=False, # Don't hide the description
 )
 
 ## Example 8 ###################################################################
@@ -258,11 +192,11 @@ define hidden_name_only = Achievement(
 ## so it shows up first in the list even though it's defined all the way down
 ## here.
 define -2 all_achievements = Achievement(
-    name=_("Platinum Achievement"),
+    name=_("Completionist"),
     id="platinum_achievement",
-    description=_("Congrats! You unlocked every achievement!"),
-    unlocked_image=Transform("gui/window_icon.png", matrixcolor=BrightnessMatrix(1.0)),
-    hide_description=_("Get all other achievements."),
+    description=_("Congrats! You unlocked every achievement! Thanks for playing!"),
+    unlocked_image=Transform("achievements/100ach.png"),
+    hide_description=_("Get all other achievements.")
 )
 
 ## This is an example of what granting achievements and recording progress
@@ -428,6 +362,9 @@ transform achievement_popout():
 ## way to display the various information.
 screen achievement_gallery():
     tag menu
+    
+    add gui.main_menu_background
+    add gui.overlay
 
     add VBox(Transform("#292835", ysize=110), "#21212db2") # Background
 
@@ -440,7 +377,12 @@ screen achievement_gallery():
     ## Version 2 ###############################################################
     ## Otherwise, if you'd like this to be independent of the game menu,
     ## use the following:
-    textbutton _("Return") action Return() align (1.0, 1.0)
+    textbutton _("Return"):
+        action Return()
+        text_color "#000"
+        text_hover_color gui.hover_color
+        align (1.0, 1.0)
+        activate_sound gui.activate_sound
     viewport:
         mousewheel True draggable True pagekeys True
         scrollbars "vertical"
@@ -490,10 +432,10 @@ screen achievement_gallery():
                         ## There are two ways to display the timestamp. The
                         ## first is automatically formatted like
                         ## Unlocked Sep 14, 2023 @ 6:45 PM
-                        text a.timestamp size 22
+                        #text a.timestamp size 22
                         ## If you want to format it yourself, you can use
                         ## the get_timestamp method:
-                        # text __("Achieved at ") + a.get_timestamp(__("%H:%M on %Y/%m/%d"))
+                        text __("Achieved at ") + a.get_timestamp(__("%H:%M on %Y/%m/%d"))
                         ## The above example would display the timestamp like:
                         ## Achieved at 18:45 on 2023/09/14
                         ## See https://strftime.org/ for formatting
@@ -515,13 +457,16 @@ screen achievement_gallery():
     ## or relocate this.
     label __("Achievements: ") + "{earned}/{total}".format(
             earned=Achievement.num_earned(), total=Achievement.num_total()):
-        text_size 52 xalign 0.5 text_color "#f93c3e" top_padding 15
+        text_size 52 xalign 0.5 text_color "#cb0ef1" top_padding 15
 
     ## This is an example of a button you might have during development which
     ## will reset all achievement progress at once. It can also be provided
     ## to players if you'd like them to be able to reset their achievement
     ## progress.
-    # textbutton "Reset All" action Achievement.Reset() align (1.0, 0.0)
+    textbutton "Reset All":
+        action Achievement.Reset()
+        align (1.0, 0.0)
+        activate_sound gui.activate_sound
 
 style achievement_button:
     size_group 'achievement'
@@ -529,7 +474,7 @@ style achievement_button:
 style achievement_label:
     padding (2, 2)
 style achievement_label_text:
-    size 40 color "#ff8335"
+    size 40 color "#ff35b2"
 style achievement_hbox:
     spacing 10
 style achievement_vbox:

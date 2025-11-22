@@ -81,7 +81,7 @@ label splashscreen:
         jump language_select_loop
 
 label language_select_loop:
-    play music t5 volume 0.3 fadein 1.0
+    $ renpy.music.play(audio.t5, loop=True, if_changed=True, relative_volume=0.3)
 
     # Si ya hay un idioma guardado...
     if persistent.language:
@@ -102,7 +102,7 @@ label language_select_loop:
                 "Set language to English?"
                 
                 "Yes":
-                    play sound notif
+                    play sound notify
                     $ persistent.language = "english"
                     "Okay! Harvey's dialogue and other text will now be in English."
                     "You can change this at any time in the options menu."
@@ -116,7 +116,7 @@ label language_select_loop:
                 "¿Establecer el idioma en Español?"
                 
                 "Sí":
-                    play sound notif
+                    play sound notify
                     $ persistent.language = "spanish"
                     "¡Muy bien! El diálogo de Harvey y otros textos ahora estarán en Español."
                     "Puedes cambiarlo en cualquier momento en el menú de opciones."
@@ -130,7 +130,7 @@ label language_select_loop:
                 "Définir la langue en Français?"
                 
                 "Oui":
-                    play sound notif
+                    play sound notify
                     $ persistent.language = "french"
                     "D'accord ! Les dialogues de Harvey et d'autres textes seront désormais en Français."
                     "Vous pouvez changer cela à tout moment dans le menu des options."
@@ -144,7 +144,7 @@ label language_select_loop:
                 "Установить язык Русский?"
 
                 "Да":
-                    play sound notif
+                    play sound notify
                     $ persistent.language = "russian"
                     "Хорошо! Диалоги Харви и другие тексты теперь будут на Русском."
                     "Вы можете изменить это в любое время в меню настроек."
@@ -166,7 +166,7 @@ label after_language_selection:
     scene white with Dissolve(2.0)
     pause 1.0
 
-    play music t6 fadein 1.0
+    #play music t6 fadein 1.0
 
     scene white
     pause 0.5
@@ -232,7 +232,7 @@ label after_language_selection:
     pause 1.0
 
     scene white
-    stop music fadeout 1.0
+    #stop music fadeout 1.0
     with Dissolve(3.0)
 
     ## This line was causing trouble with the main menu!

@@ -48,7 +48,6 @@ init python:
 
         renpy.notify(_("All save files deleted."))
 
-
 ################################################################################
 ## Styles
 ################################################################################
@@ -296,7 +295,7 @@ screen quick_menu():
             textbutton _("History") action ShowMenu('history')
             #textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
             #textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Save") action ShowMenu('save')
+            #textbutton _("Save") action ShowMenu('save')
             #textbutton _("Q.Save") action QuickSave()
             #textbutton _("Q.Load") action QuickLoad()
             textbutton _("Prefs") action ShowMenu('preferences')
@@ -349,7 +348,41 @@ screen ok_screen(message):
             textbutton _("OK"):
                 xalign 0.5
                 # Plays a hover sound and a click sound, then hides the screen
-                action [Play("sound", gui.activate_sound), Hide("ok_screen")]
+                action Hide("ok_screen")
+                activate_sound gui.activate_sound
+                hover_sound gui.hover_sound
+                text_align 0.5
+
+screen error_screen(message):
+    modal True
+    zorder 100
+
+    # Play the sound when the screen shows
+    on "show" action Play("sound", "audio/SFX_Error.mp3")
+
+    # Dark transparent overlay behind the frame
+    add Solid("#00000080")  # 50% black overlay
+
+    frame:
+        align (0.5, 0.5)
+        padding (40, 30)
+        background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
+        xmaximum 600
+        yminimum 200
+
+        vbox:
+            spacing 20
+            xalign 0.5
+
+            text message:
+                xalign 0.5
+                size 28
+                text_align 0.5
+
+            textbutton _("OK"):
+                xalign 0.5
+                action Hide("error_screen")
+                activate_sound gui.activate_sound
                 hover_sound gui.hover_sound
                 text_align 0.5
 
@@ -388,7 +421,9 @@ screen navigation():
 
         if main_menu:
 
-            textbutton _("Start") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message="What's your name?", ok_action=Function(FinishEnterName)))
+            textbutton _("Start"):
+                action If(persistent.playername, true=[Start('start')], false=Show(screen="name_input", message="What's your name?", ok_action=Function(FinishEnterName)))
+                activate_sound gui.start_game_sound
 
         else:
 
@@ -396,7 +431,7 @@ screen navigation():
 
             #textbutton _("Save") action ShowMenu("save")
 
-        textbutton _("Load") action ShowMenu("load")
+        #textbutton _("Load") action ShowMenu("load")
 
         textbutton _("Achievements") action ShowMenu("achievement_gallery")
 
@@ -471,12 +506,22 @@ screen main_menu():
 
         vbox:
             style "main_menu_vbox"
+            
+            if "1." not in config.version:
+                text "DEV BUILD":
+                    style "outline_text"
+                    size 50
+                    xalign 1.0  # align the whole vbox to the right
+                    xmaximum 800  # optional: max width for alignment
 
-            text "[config.name!t]":
-                style "main_menu_title"
+            #text "[config.name!t]":
+            #     style "main_menu_title"
 
-            text "[config.version]":
-                style "main_menu_version"
+            text "Version [config.version]":
+                style "outline_text"
+                size 30
+                xalign 1.0  # align the whole vbox to the right
+                xmaximum 800  # optional: max width for alignment
 
 
 style main_menu_frame is empty
@@ -506,6 +551,10 @@ style main_menu_title:
 
 style main_menu_version:
     properties gui.text_properties("version")
+
+style outline_text:
+    color "#FFFFFF"
+    outlines [(3, "#000000", 0, 0)]
 
 
 ## Game Menu screen ############################################################
@@ -585,7 +634,7 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
     label title
 
     if main_menu:
-        key "game_menu" action ShowMenu("main_menu")
+        key "game_menu" action ShowMenu("preferences")
 
 
 style game_menu_outer_frame is empty
@@ -675,7 +724,10 @@ screen about():
         vbox:
 
             label "[config.name!t]"
-            text _("Version [config.version!t]\n")
+            if "1." not in config.version:
+                text _("Version [config.version!t] - DEV BUILD\n")
+            else:
+                text _("Version [config.version!t]\n")
 
             ## gui.about is usually set in options.rpy.
             if gui.about:
@@ -930,7 +982,9 @@ screen preferences():
                     label _("Delete Saves?") # NOT WORKING YET
     
                     hbox:
-                        textbutton _("Delete All Saves") action [Show("ok_screen", message="This option isn’t implemented yet. You can delete save files manually on your system.")]
+                        textbutton _("Delete All Saves"):
+                            action [Show("error_screen", message="This option isn’t implemented yet. You can delete save files manually on your system.")]
+
 
 screen confirm_delete_saves():
     modal True
@@ -1311,11 +1365,17 @@ screen confirm(message, yes_action, no_action):
                 xalign 0.5
                 spacing 150
 
-                textbutton _("Yes") action yes_action
-                textbutton _("No") action no_action
+                textbutton _("Yes"):
+                    action yes_action
+                    activate_sound gui.activate_sound
+                textbutton _("No"):
+                    action no_action
+                    activate_sound gui.activate_sound
 
     ## Right-click and escape answer "no".
-    key "game_menu" action no_action
+    key "game_menu":
+        action no_action
+        activate_sound gui.activate_sound
 
 
 style confirm_frame is gui_frame
@@ -1672,7 +1732,7 @@ screen quick_menu():
             textbutton _("Back") action Rollback()
             textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Menu") action ShowMenu()
+            textbutton _("Menu") action ShowMenu("preferences")
 
 
 style window:

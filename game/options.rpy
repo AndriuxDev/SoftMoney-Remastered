@@ -18,12 +18,12 @@ define config.name = _("SoftMoney Remastered")
 ## Determines if the title given above is shown on the main menu screen. Set
 ## this to False to hide the title.
 
-define gui.show_name = False
+define gui.show_name = True
 
 
 ## The version of the game.
 
-define config.version = "0.25a"
+define config.version = "0.8a"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
@@ -62,7 +62,9 @@ define config.sample_sound = "SFX_Money.ogg"
 ## game, until it is stopped or another file is played.
 
 define config.main_menu_music = audio.t0a
-
+define config.has_autosave = False
+define config.has_quicksave = False
+define config.developer = False
 
 ## Transitions #################################################################
 ##
@@ -72,24 +74,26 @@ define config.main_menu_music = audio.t0a
 
 ## Entering or exiting the game menu.
 
-define config.enter_transition = irisin
-define config.exit_transition = irisout
+define config.enter_transition = fade
+define config.exit_transition = fade
 
 
 ## Between screens of the game menu.
 
-define config.intra_transition = dissolve
+define config.intra_transition = fade
 
 
 ## A transition that is used after a game has been loaded.
 
-define config.after_load_transition = None
+define config.after_load_transition = fade
 
 
 ## Used when entering the main menu after the game has ended.
 
-define config.end_game_transition = None
+define config.end_game_transition = fade
 
+## Used when pressing "Esc" on the keyboard or Right Mouse Click
+define _game_menu_screen = "preferences"
 
 ## A variable to set the transition used when the game starts does not exist.
 ## Instead, use a with statement after showing the initial scene.
@@ -142,14 +146,34 @@ default preferences.afm_time = 15
 ## This generally should not be changed, and if it is, should always be a
 ## literal string, not an expression.
 
-define config.save_directory = "SoftMoneyRemastered-1761794924"
-
+define config.save_directory = "SoftMoney-Remastered"
 
 ## Icon ########################################################################
 ##
 ## The icon displayed on the taskbar or dock.
 
-define config.window_icon = "gui/window_icon.png"
+init -501 python:
+    import datetime
+
+    # Obtener la fecha actual
+    today = datetime.date.today()
+    month = today.month
+    day = today.day
+
+    # Halloween: 31 de octubre
+    if month == 10 and day == 31:
+        config.window_icon = "gui/window_icon_halloween.png"
+
+    # Navidad: 24-25 de diciembre
+    elif month == 12 and day in [24, 25]:
+        config.window_icon = "gui/window_icon_xmas.png"
+
+    elif month == 11 and day == 11:
+        config.window_icon = "gui/window_icon.png"
+
+    # Ícono por defecto
+    else:
+        config.window_icon = "gui/window_icon_HD.png"
 
 
 ## Build configuration #########################################################
