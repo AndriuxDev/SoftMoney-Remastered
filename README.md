@@ -1,4 +1,4 @@
-<img width="1334" height="573" alt="logoHD" src="https://github.com/user-attachments/assets/706284ba-e73c-4be6-b24e-6d6d82139451" />
+<img width="1334" height="573" alt="logoHD" src="/workspaces/SoftMoney-Remastered/game/images/logoHD.png" />
 
 ---
 
