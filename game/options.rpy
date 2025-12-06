@@ -4,7 +4,6 @@
 ## them. Lines beginning with a single '#' mark are commented-out code, and you
 ## may want to uncomment them when appropriate.
 
-
 ## Basics ######################################################################
 
 ## A human-readable name of the game. This is used to set the default window
@@ -12,7 +11,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("SoftMoney Remastered")
+define config.name = "SoftMoney Remastered"
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -23,7 +22,7 @@ define gui.show_name = True
 
 ## The version of the game.
 
-define config.version = "0.8a"
+define config.version = "1.0"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
@@ -38,7 +37,6 @@ define gui.about = "This is a remastered fan-work in the spirit of paper-pepper'
 
 define build.name = "SoftMoneyRemastered"
 
-
 ## Sounds and music ############################################################
 
 ## These three variables control, among other things, which mixers are shown
@@ -48,7 +46,6 @@ define build.name = "SoftMoneyRemastered"
 define config.has_sound = True
 define config.has_music = True
 define config.has_voice = False
-
 
 ## To allow the user to play a test sound on the sound or voice channel,
 ## uncomment a line below and use it to set a sample sound to play.
@@ -65,6 +62,7 @@ define config.main_menu_music = audio.t0a
 define config.has_autosave = False
 define config.has_quicksave = False
 define config.developer = False
+define config.default_music_volume = 0.7
 
 ## Transitions #################################################################
 ##
@@ -76,7 +74,11 @@ define config.developer = False
 
 define config.enter_transition = fade
 define config.exit_transition = fade
+define config.rollback_enabled = False # disable rollback
 
+# init:
+    # $ config.keymap['rollback'].remove('mousedown_4')        # remove mousewheel from keymap
+    # $ config.keymap['rollback'].append('mousedown_4')        # add mousewheel to keymap
 
 ## Between screens of the game menu.
 
@@ -160,14 +162,15 @@ init -501 python:
     month = today.month
     day = today.day
 
-    # Halloween: 31 de octubre
+    # Halloween: October 31st
     if month == 10 and day == 31:
         config.window_icon = "gui/window_icon_halloween.png"
 
-    # Navidad: 24-25 de diciembre
+    # Christmas: December 24-25
     elif month == 12 and day in [24, 25]:
         config.window_icon = "gui/window_icon_xmas.png"
 
+    # Original Icon: 
     elif month == 11 and day == 11:
         config.window_icon = "gui/window_icon.png"
 

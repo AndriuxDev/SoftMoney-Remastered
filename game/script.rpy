@@ -41,10 +41,13 @@ label start:
         "Some patients were climbing their way back to life,{w=0.5} others were quietly slipping toward their final moments."
         "And you?{w=0.5} You were trapped in a nightmare—one that demanded a price you could never hope to afford."
 
+        stop music fadeout 2.0
+        window hide
+        pause 3.0
         play music t2
 
-        scene bg intro1
-
+        scene bg intro1 with dissolve
+        window show
         d "Your condition is critical, [player].{w=1.5} Without surgery… you won’t make it. The procedure will cost $25,000."
 
         "Your stomach drops.{w=0.5} The words hit harder than any diagnosis ever could.{w=0.5} Twenty-five thousand… how could anyone raise that in time?"
@@ -57,10 +60,12 @@ label start:
         "But along the road, something unusual catches your eye: a small, curious stall… and a man who smiles as though he’s been expecting you."
         "Against your better judgment,{w=0.5} you pull over."
 
-        scene black
+        scene black with dissolve
+        window hide
         stop music fadeout 5.0
-        pause 2.0
-
+        pause 7.0
+        call maingame
+    
     pause 2.0
 
     return

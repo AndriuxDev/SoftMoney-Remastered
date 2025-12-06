@@ -1,12 +1,10 @@
 ## Music
 define audio.t0a = "audio/MainMenu.mp3"
-define audio.t0b = "audio/TitleSMB.mp3"
 define audio.t1 = "audio/Dune.mp3"
 define audio.t2 = "audio/Intro.ogg"
 define audio.t3 = "audio/Music Normal.ogg"
 define audio.t4 = "audio/Neutral Ending.ogg"
 define audio.t5 = "audio/LangSelect.mp3"
-define audio.t6 = "audio/ROMVerify.mp3"
 
 ## Sound Effects
 define audio.button = "audio/SFX_Button.ogg"
@@ -17,6 +15,8 @@ define audio.notify = "audio/SFX_Notification.ogg"
 define audio.birbs = "audio/birds.ogg"
 define audio.doorbell = "audio/bell.ogg"
 define audio.error = "audio/SFX_Error.mp3"
+define audio.doorknock = "audio/SFX_DoorKnock.ogg"
+define audio.logo = "audio/SFX_Logo.mp3"
 
 ## Backgrounds
 image bg end1 = "images/end1.png"
@@ -144,6 +144,24 @@ image harvey 3c2 = "images/3c2.png"
 image harvey 3d1 = "images/3d1.png"
 image harvey 3d1h = "images/3d1h.png"
 
+# --- More Games ---
+image icon0 = "moregames/icon0.png"        # Test icon
+image icon-bm = "moregames/icon-bm.png"
+image icon-hep = "moregames/icon-hep.png"
+image icon-lm = "moregames/icon-lm.png"
+image icon-sm = "moregames/icon-sm.png"
+
+# --- FLAGS ---
+image bg bglang = "images/bglang.png"
+image flag_EN = "flags/english.png"
+image flag_SP = "flags/spanish.png"
+image flag_FR = "flags/french.png"
+image flag_RU = "flags/russian.png"
+image flag_JP = "flags/japanese.png"
+image flag_KR = "flags/korean.png"
+image flag_HV = "flags/high-valyrian.png" # High Valyrian
+image flag_TLH = "flags/klingon.png"      # Klingon
+image flag_UNK = "flags/nolang.png"       # Other languages
 
 ## Persistent file
 default persistent.playername = ""
@@ -151,3 +169,4 @@ default player = persistent.playername
 default persistent.first_run = False
 default persistent.language = None
 image ctc = "gui/ctc.png"  # Make sure the file exists
+image devlogo = "images/devlogo.png"

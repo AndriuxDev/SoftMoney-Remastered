@@ -2,6 +2,147 @@
 # script-ch1.rpy, may need to be divided in separate files for cleaner look
 # -----------------------
 
+#=============================================
+# CHECK MONEY TAGS FUNCTION
+#=============================================
+
+init python:
+
+    def check_events():
+
+        money = renpy.store.money  # shortcut to the money variable
+        s = renpy.store  # shortcut to the interaction flags
+
+        if not s.poke1 and money == 50:
+            s.poke1 = True
+            renpy.call("poke50")
+
+        if not s.unlock_shop_intro and money == 100:
+            s.unlock_shop_intro = True
+            renpy.call("shop_intro")
+
+        # --- unlockitem1 (hi5) ---
+        if s.unlockitem1 and not s.hifive1 and money == 100:
+            s.hifive1 = True
+            renpy.call("hi5_A")
+
+        if s.unlockitem1 and not s.hifive2 and money == 200:
+            s.hifive2 = True
+            renpy.call("hi5_B")
+
+        if s.unlockitem1 and not s.hifive3 and money == 300:
+            s.hifive3 = True
+            renpy.call("hi5_C")
+
+        if s.unlockitem1 and not s.hifive4 and money == 400:
+            s.hifive4 = True
+            renpy.call("hi5_A")
+
+        if s.unlockitem1 and not s.hifive5 and money == 500:
+            s.hifive5 = True
+            renpy.call("hi5_D")
+
+        # --- unlockitem2 (handshakes) ---
+        if s.unlockitem2 and not s.hand1 and money == 400:
+            s.hand1 = True
+            renpy.call("handshake_A")
+
+        if s.unlockitem2 and not s.hand2 and money == 800:
+            s.hand2 = True
+            renpy.call("handshake_B")
+
+        if s.unlockitem2 and not s.hand3 and money == 1200:
+            s.hand3 = True
+            renpy.call("handshake_C")
+
+        if s.unlockitem2 and not s.hand4 and money == 1600:
+            s.hand4 = True
+            renpy.call("handshake_D")
+
+        if s.unlockitem2 and not s.hand5 and money == 2000:
+            s.hand5 = True
+            renpy.call("handshake_E")
+
+        # --- unlockitem3 (pat heads) ---
+        if s.unlockitem3 and not s.pathead1 and money == 1000:
+            s.pathead1 = True
+            renpy.call("headpat_A")
+
+        if s.unlockitem3 and not s.pathead2 and money == 2000:
+            s.pathead2 = True
+            renpy.call("headpat_B")
+
+        if s.unlockitem3 and not s.pathead3 and money == 3000:
+            s.pathead3 = True
+            renpy.call("headpat_C")
+
+        if s.unlockitem3 and not s.pathead4 and money == 4000:
+            s.pathead4 = True
+            renpy.call("headpat_D")
+
+        if s.unlockitem3 and not s.pathead5 and money == 5000:
+            s.pathead5 = True
+            renpy.call("headpat_E")
+
+        # --- unlockitem4 (massages) ---
+        if s.unlockitem4 and not s.masg1 and money == 2000:
+            s.masg1 = True
+            renpy.call("massage_A")
+
+        if s.unlockitem4 and not s.masg2 and money == 4000:
+            s.masg2 = True
+            renpy.call("massage_B")
+
+        if s.unlockitem4 and not s.masg3 and money == 6000:
+            s.masg3 = True
+            renpy.call("massage_C")
+
+        if s.unlockitem4 and not s.masg4 and money == 8000:
+            s.masg4 = True
+            renpy.call("massage_D")
+
+        if s.unlockitem4 and not s.masg5 and money == 10000:
+            s.masg5 = True
+            renpy.call("massage_E")
+
+        # --- unlockitem5 (hugs) ---
+        if s.unlockitem5 and not s.hug0 and money == 80:
+            s.hug0 = True
+            renpy.call("hug_intro")
+
+        if s.unlockitem5 and not s.hug1 and money == 4000:
+            s.hug1 = True
+            renpy.call("hug_A")
+
+        if s.unlockitem5 and not s.hug2 and money == 8000:
+            s.hug2 = True
+            renpy.call("hug_B")
+
+        if s.unlockitem5 and not s.hug3 and money == 12000:
+            s.hug3 = True
+            renpy.call("hug_C")
+
+        if s.unlockitem5 and not s.hug4 and money == 16000:
+            s.hug4 = True
+            renpy.call("hug_D")
+
+        if s.unlockitem5 and not s.hug5 and money == 20000:
+            s.hug5 = True
+            renpy.call("hug_E")
+
+        # --- ENDINGS ---
+
+        # Ending 2: Hugs unlocked, but NOT the comb
+        if s.unlockitem5 and not s.unlockitem6 and money >= 25000:
+            s.endflag2 = True
+            return renpy.call("preending2")
+
+        # Ending 1: No hugs (item 5), regardless of other items
+        elif not s.unlockitem5 and money >= 25000:
+            s.endflag1 = True
+            return renpy.call("preending1")
+
+
 # ============================================
 # INITIATION
 # ============================================
@@ -79,12 +220,23 @@ label template:
 # ============================================
 
 label maingame:
+    if not config.developer:
+        $ h2.name = "???"
+        $ harvey_name = "???"
+    else:
+        $ h2.name = "Harvey"
+        $ harvey_name = "Harvey"
+
     scene bg bg1
     show harvey a3 at tipocenter
     play music t3
+
     if config.developer == True:
+        window show
         "This is a developer build. Bypassing introduction..."
+
     else:
+        window show
         "As you got into the stall, the man was already waiting for you."
         show harvey a1t at tipocenter
         h2 "Hey there! You must be [player], right?"
@@ -94,11 +246,12 @@ label maingame:
         h2 "I\'m Harvey. Thanks for meeting me here."
         show harvey a1 at tipocenter
         player "Harvey?{w=1} That\'s...{w=1} a unique name."
+        $ h2.name = "Harvey"
         $ harvey_name = "Harvey"
         show harvey a3t at tipocenter
         h2 "Haha, yeah. I get that a lot."
         show harvey a3 at tipocenter
-        "He chuckled softly, his eyes twinkling with2 amusement."
+        "He chuckled softly, his eyes twinkling with amusement."
         player "About your stall..."
         show harvey a2t at tipocenter
         h2 "Oh, right!{w=1} You must be wondering why I\'m here."
@@ -317,8 +470,9 @@ label hi5_D:
 label handshake_A:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a4t at tipocenter
     h2 "We should've done this back when we first met, right?"
+    show harvey a4 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -328,8 +482,9 @@ label handshake_A:
 label handshake_B:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a3t at tipocenter
     h2 "You've got quite a strong grip!"
+    show harvey a3 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -339,8 +494,9 @@ label handshake_B:
 label handshake_C:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a2t at tipocenter
     h2 "Handshakes really bring people closer, don't you think?"
+    show harvey a1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -350,9 +506,10 @@ label handshake_C:
 label handshake_D:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a4t at tipocenter
     h2 "Can I..."
     h2 "Can I call you my friend after this?"
+    show harvey a4 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -362,8 +519,9 @@ label handshake_D:
 label handshake_E:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a3t at tipocenter
     h2 "I suppose I can!"
+    show harvey a3 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -375,8 +533,9 @@ label handshake_E:
 label headpat_A:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a4t at tipocenter
     h2 "This is rather... unusual..."
+    show harvey a4 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -397,9 +556,11 @@ label headpat_B:
 label headpat_C:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a2t at tipocenter
     h2 "I hope my hair doesn't look too messy?"
+    show harvey a1t at tipocenter
     h2 "My favorite comb broke, so I spent the whole morning fixing it."
+    show harvey a1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -409,9 +570,10 @@ label headpat_C:
 label headpat_D:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a4t at tipocenter
     h2 "I feel like a pet getting petted for being good."
-    h2 "That's weird :D"
+    h2 "That's weird..."
+    show harvey a4 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -421,9 +583,11 @@ label headpat_D:
 label headpat_E:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey d2t at tipocenter
     h2 "Let's just forget I said anything about being a pet."
+    show harvey d1t at tipocenter
     h2 "Okay?"
+    show harvey d1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -435,9 +599,10 @@ label headpat_E:
 label massage_A:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey d2t at tipocenter
     h2 "Thank God my wife isn't seeing this."
     h2 "I'm sure we look incredibly weird from the outside."
+    show harvey a1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -447,9 +612,11 @@ label massage_A:
 label massage_B:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a4t at tipocenter
     h2 "Maybe we should go back to head pats?"
+    show harvey a3t at tipocenter
     h2 "Actually, never mind — keep going."
+    show harvey a3 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -459,9 +626,11 @@ label massage_B:
 label massage_C:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a1t at tipocenter
     h2 "I usually stand behind this stall all day without a break."
+    show harvey a3t at tipocenter
     h2 "I think I really deserved a bit of relaxation!"
+    show harvey a3 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -471,9 +640,11 @@ label massage_C:
 label massage_D:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey a2t at tipocenter
     h2 "Oh, I think my shoulder pain is gone!"
+    show harvey a3t at tipocenter
     h2 "Thank you so much!"
+    show harvey a3 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -483,9 +654,10 @@ label massage_D:
 label massage_E:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
-    h2 "You know, you're surprisingly good at this"
+    show harvey a1t at tipocenter
+    h2 "You know, you're surprisingly good at this."
     h2 "You wouldn't happen to be a masseur, would you?"
+    show harvey a1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -497,10 +669,13 @@ label massage_E:
 label hug_A:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey c1t at tipocenter
     h2 "I don't get hugs from people very often..."
+    show harvey c1 at tipocenter
     player "Really?"
+    show harvey c1t at tipocenter
     h2 "Yeah..."
+    show harvey c2 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -510,11 +685,14 @@ label hug_A:
 label hug_B:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey c2t at tipocenter
     h2 "I usually get treated..."
     h2 "...a lot rougher..."
+    show harvey c2 at tipocenter
     player "How so?"
+    show harvey c1t at tipocenter
     h2 "It's hard to say, honestly..."
+    show harvey c1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -524,10 +702,12 @@ label hug_B:
 label hug_C:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey c1t at tipocenter
     h2 "Sometimes so rough that you can't help but wonder..."
+    show harvey c2t at tipocenter
     h2 "As if I'm not a real person..."
     h2 "But just someone's toy..."
+    show harvey c2 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -537,7 +717,7 @@ label hug_C:
 label hug_D:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey d1 at tipocenter
     h2 "..."
     show screen click_harvey
     show screen maingame_screen with dissolve
@@ -548,9 +728,11 @@ label hug_D:
 label hug_E:
     hide screen click_harvey
     window show
-    show harvey a4 at tipocenter
+    show harvey d2t at tipocenter
     h2 "It's already getting dark — my family's probably waiting for me."
+    show harvey d1t at tipocenter
     h2 "Finish up what you're doing and I'll head home."
+    show harvey d1 at tipocenter
     show screen click_harvey
     show screen maingame_screen with dissolve
     window hide
@@ -579,6 +761,7 @@ label preending1:
     show harvey a3t at tipocenter
     h2 "Another satisfied customer, of course!"
     show harvey a3 at tipocenter
+    window hide
     jump ending1
     return
 
@@ -601,11 +784,15 @@ label preending2:
     h2 "Another customer helped... another person moving on..."
     show harvey d2t at tipocenter
     h2 "And in the end... just another customer."
+    window hide
+    stop music fadeout 1.0
+    pause 1.0
     jump ending2
     return
 
 # Best ending
 label preending3:
+    $ hiddencomb.grant()
     hide screen click_harvey with dissolve
     hide screen maingame_screen with dissolve
     show harvey b1 at tipocenter
@@ -631,6 +818,8 @@ label preending3:
     show harvey b2 at tipocenter
     h2 "Wait! Where are you going?!"
     show harvey b1 at tipocenter
+    window hide
+    pause 1.0
     jump ending3
     return
 
@@ -641,7 +830,6 @@ label preending3:
 screen click_harvey():
     tag harvey
 
-    # CLICK HARVEY
     imagebutton:
         idle hbutton_idle
         hover hbutton_hover
@@ -651,40 +839,7 @@ screen click_harvey():
             SetVariable("money", money + addmoney),
             SetVariable("clicks", clicks + 1),
             Play("sound", audio.money),
-            If(poke1 == False and money >= 49, [SetVariable("poke1", True), Call("poke50")]),
-            If(unlock_shop_intro == False and money >= 99, [SetVariable("unlock_shop_intro", True), Call("shop_intro")]),
-            If(unlockitem1 == True and hifive1 == False and money >= 98 and money <=102, [SetVariable("hifive1", True), Call("hi5_A")]),
-            If(unlockitem1 == True and hifive2 == False and money >= 198 and money <=202, [SetVariable("hifive2", True), Call("hi5_B")]),
-            If(unlockitem1 == True and hifive3 == False and money >= 298 and money <=302, [SetVariable("hifive3", True), Call("hi5_C")]),
-            If(unlockitem1 == True and hifive4 == False and money >= 398 and money <=402, [SetVariable("hifive4", True), Call("hi5_A")]),
-            If(unlockitem1 == True and hifive5 == False and money >= 498 and money <=502, [SetVariable("hifive5", True), Call("hi5_D")]),
-            If(unlockitem2 == True and hand1 == False and money >= 390 and money <=410, [SetVariable("hand1", True), Call("handshake_A")]),
-            If(unlockitem2 == True and hand2 == False and money >= 790 and money <=810, [SetVariable("hand2", True), Call("handshake_B")]),
-            If(unlockitem2 == True and hand3 == False and money >= 1190 and money <=1210, [SetVariable("hand3", True), Call("handshake_C")]),
-            If(unlockitem2 == True and hand4 == False and money >= 1590 and money <=1610, [SetVariable("hand4", True), Call("handshake_D")]),
-            If(unlockitem2 == True and hand5 == False and money >= 1990 and money <=2010, [SetVariable("hand5", True), Call("handshake_E")]),
-            If(unlockitem3 == True and pathead1 == False and money >= 980 and money <=1020, [SetVariable("pathead1", True), Call("headpat_A")]),
-            If(unlockitem3 == True and pathead2 == False and money >= 1980 and money <=2020, [SetVariable("pathead2", True), Call("headpat_B")]),
-            If(unlockitem3 == True and pathead3 == False and money >= 2980 and money <=3020, [SetVariable("pathead3", True), Call("headpat_C")]),
-            If(unlockitem3 == True and pathead4 == False and money >= 3980 and money <=4020, [SetVariable("pathead4", True), Call("headpat_D")]),
-            If(unlockitem3 == True and pathead5 == False and money >= 4980 and money <=5020, [SetVariable("pathead5", True), Call("headpat_E")]),
-            If(unlockitem4 == True and masg1 == False and money >= 1960 and money <=2040, [SetVariable("masg1", True), Call("massage_A")]),
-            If(unlockitem4 == True and masg2 == False and money >= 3960 and money <=4040, [SetVariable("masg2", True), Call("massage_B")]),
-            If(unlockitem4 == True and masg3 == False and money >= 5960 and money <=6040, [SetVariable("masg3", True), Call("massage_C")]),
-            If(unlockitem4 == True and masg4 == False and money >= 7960 and money <=8040, [SetVariable("masg4", True), Call("massage_D")]),
-            If(unlockitem4 == True and masg5 == False and money >= 9960 and money <=10040, [SetVariable("masg5", True), Call("massage_E")]),
-            If(unlockitem5 == True and hug0 == False and money >= 0 and money <=160, [SetVariable("hug0", True), Call("hug_intro")]),
-            If(unlockitem5 == True and hug1 == False and money >= 3920 and money <=4080, [SetVariable("hug1", True), Call("hug_A")]),
-            If(unlockitem5 == True and hug2 == False and money >= 7920 and money <=8080, [SetVariable("hug2", True), Call("hug_B")]),
-            If(unlockitem5 == True and hug3 == False and money >= 11920 and money <=12080, [SetVariable("hug3", True), Call("hug_C")]),
-            If(unlockitem5 == True and hug4 == False and money >= 15920 and money <=16080, [SetVariable("hug4", True), Call("hug_D")]),
-            If(unlockitem5 == True and hug5 == False and money >= 19920 and money <=20080, [SetVariable("hug5", True), Call("hug_E")]),
-            If(unlockitem1 == False and money >= 24999 and money <= 25001, [SetVariable("endflag1", True), Call("preending1")]),
-            If(unlockitem1 == True and money >= 24998 and money <= 25002, [SetVariable("endflag1", True), Call("preending1")]),
-            If(unlockitem2 == True and money >= 24990 and money <= 25010, [SetVariable("endflag1", True), Call("preending1")]),
-            If(unlockitem3 == True and money >= 24980 and money <= 25020, [SetVariable("endflag1", True), Call("preending1")]),
-            If(unlockitem4 == True and money >= 24960 and money <= 25040, [SetVariable("endflag1", True), Call("preending1")]),
-            If(unlockitem5 == True and unlockitem6 == False and money >= 24920 and money <= 25080, [SetVariable("endflag2", True), Call("preending2")])
+            Function(check_events)
         ]
 
 screen maingame_screen():
@@ -700,7 +855,7 @@ screen maingame_screen():
         xpos 0.79
         ypos 0.155
         spacing 0
-        text "[clicks]" size 75 color "#fff"
+        text "{font=ArchiveUkr-Regular.ttf}[clicks]{/font}" size 75 color "#fff"
 
     hbox:
         xpos 0
@@ -711,10 +866,50 @@ screen maingame_screen():
         xpos 0.79
         ypos 0.025
         spacing 0
-        text "[money]" size 75 color "#fff"
+        text "{font=ArchiveUkr-Regular.ttf}[money]{/font}" size 75 color "#fff"
 
     # OPEN SHOP BUTTON
-    if clicks >= 100:
+    if money >= 100 and not unlockitem1:
+        imagebutton:
+            idle shop2_idle
+            hover shop2_hover
+            xpos 0.0
+            ypos 0.0
+            action [Show("shop_home"), Show("shop_items"), With(Dissolve(0.5))]
+            activate_sound gui.activate_sound
+    elif money >= 500 and not unlockitem2:
+        imagebutton:
+            idle shop2_idle
+            hover shop2_hover
+            xpos 0.0
+            ypos 0.0
+            action [Show("shop_home"), Show("shop_items"), With(Dissolve(0.5))]
+            activate_sound gui.activate_sound
+    elif money >= 2000 and not unlockitem3:
+        imagebutton:
+            idle shop2_idle
+            hover shop2_hover
+            xpos 0.0
+            ypos 0.0
+            action [Show("shop_home"), Show("shop_items"), With(Dissolve(0.5))]
+            activate_sound gui.activate_sound
+    elif money >= 5000 and not unlockitem4:
+        imagebutton:
+            idle shop2_idle
+            hover shop2_hover
+            xpos 0.0
+            ypos 0.0
+            action [Show("shop_home"), Show("shop_items"), With(Dissolve(0.5))]
+            activate_sound gui.activate_sound
+    elif money >= 10000 and not unlockitem5:
+        imagebutton:
+            idle shop2_idle
+            hover shop2_hover
+            xpos 0.0
+            ypos 0.0
+            action [Show("shop_home"), Show("shop_items"), With(Dissolve(0.5))]
+            activate_sound gui.activate_sound
+    elif money >= 20000 and not unlockitem6:
         imagebutton:
             idle shop2_idle
             hover shop2_hover
@@ -775,7 +970,7 @@ screen shop_items():
                                 SetVariable("addmoney", 2),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Hi-5! You now earn 2 coins per click!"),
+                                #Notify("You unlocked the Hi-5! You now earn 2 coins per click!"),
                                 Call("hi5_intro")
                                 ]                                
                     elif (money >= 100 and unlockitem1 == True):
@@ -800,7 +995,7 @@ screen shop_items():
                                 SetVariable("addmoney", 10),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Handshake! You now earn 10 coins per click!"),
+                                #Notify("You unlocked the Handshake! You now earn 10 coins per click!"),
                                 Call("handshake_intro")
                                 ]
                     elif (money >= 500 and unlockitem2 == True):
@@ -825,7 +1020,7 @@ screen shop_items():
                                 SetVariable("addmoney", 20),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Headpat! You now earn 20 coins per click!"),
+                                #Notify("You unlocked the Headpat! You now earn 20 coins per click!"),
                                 Call("headpat_intro")
                                 ]
                     elif (money >= 2000 and unlockitem3 == True):
@@ -850,7 +1045,7 @@ screen shop_items():
                                 SetVariable("addmoney", 40),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Massage! You now earn 40 coins per click!"),
+                                #Notify("You unlocked the Massage! You now earn 40 coins per click!"),
                                 Call("massage_intro")
                                 ]
                     elif (money >= 5000 and unlockitem4 == True):
@@ -875,7 +1070,7 @@ screen shop_items():
                                 SetVariable("addmoney", 80),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Hug! You now earn 80 coins per click!"),
+                                #Notify("You unlocked the Hug! You now earn 80 coins per click!"),
                                 Call("hug_preintro")
                                 ]
                     elif (money >= 10000 and unlockitem5 == True):
@@ -900,7 +1095,7 @@ screen shop_items():
                                 SetVariable("addmoney", 0),
                                 Play("sound", audio.notify),
                                 Hide("shop_items"), Hide("shop_home"), With(Dissolve(0.5)),
-                                Notify("You unlocked the Comb! You got the best ending"),
+                                #Notify("You unlocked the Comb! You got the best ending!"),
                                 Call("preending3")
                                 ]
                     elif (money >= 20000 and unlockitem6 == True):

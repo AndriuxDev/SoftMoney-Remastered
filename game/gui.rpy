@@ -18,7 +18,7 @@ define config.check_conflicting_properties = True
 define gui.hover_sound = "Audio/SFX_Hover.ogg"
 define gui.activate_sound = "Audio/SFX_Button.ogg"
 define gui.start_game_sound = "Audio/SFX_Decision.ogg"
-
+define gui.radio_sound = "Audio/SFX_RadioButton.mp3"
 ################################################################################
 ## GUI Configuration Variables
 ################################################################################
@@ -62,13 +62,13 @@ define gui.overlay = "images/overlay2.png"
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
-define gui.text_font = "fonts/ArchiveUkr-Regular.ttf"
+define gui.text_font = "fonts/IBMPlexSans-Bold.ttf"
 
 ## The font used for character names.
-define gui.name_text_font = "fonts/ArchiveUkr-Regular.ttf"
+define gui.name_text_font = "fonts/IBMPlexSans-Bold.ttf"
 
 ## The font used for out-of-game text.
-define gui.interface_text_font = "fonts/ArchiveUkr-Regular.ttf"
+define gui.interface_text_font = "fonts/IBMPlexSans-Bold.ttf"
 
 ## The size of normal dialogue text.
 define gui.text_size = 33

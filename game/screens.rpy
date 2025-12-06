@@ -2,12 +2,14 @@
 ## Initialization
 ################################################################################
 
+default debug_tab = "general"
+
 init offset = -1
 
 init -1 style navigation_button:
     size_group "navigation"
     properties gui.button_properties("navigation_button")
-    #hover_sound gui.hover_sound
+    hover_sound gui.hover_sound
     activate_sound gui.activate_sound
 
 init -501 screen name_input(message, ok_action):
@@ -16,7 +18,7 @@ init -501 screen name_input(message, ok_action):
     style_prefix "confirm"
     add "gui/overlay/confirm.png"
     key "K_RETURN" action [Play("sound", gui.activate_sound), ok_action]
-
+    
     frame:
         has vbox:
             xalign .5
@@ -25,28 +27,42 @@ init -501 screen name_input(message, ok_action):
         label _(message):
             style "confirm_prompt"
             xalign 0.5
-        input default "" value VariableInputValue("player") length 20 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        input default "" value VariableInputValue("player") length 20 allow "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" textalign 0.5
+        
         hbox:
             xalign 0.5
             spacing 100
-            textbutton _("OK") action ok_action
-            textbutton _("Cancel") action Hide("name_input")
+            textbutton _("Start Game") action ok_action hover_sound gui.hover_sound activate_sound gui.activate_sound
+            textbutton _("Cancel") action Hide("name_input") hover_sound gui.hover_sound activate_sound gui.activate_sound
 
 init python:
-    def delete_all_saves(confirm=True, delete_persistent=False):
-        import renpy
+    def reset_data():
+        ## deletes all persistent data use with caution
+        for attr in dir(persistent):
+            if not callable(attr) and not attr.startswith("_"):
+                setattr(persistent, attr, None)
 
-        if confirm:
-            return
+        # Set the window title manually
+        setattr(config, "window_title", "SoftMoney Remastered")
 
-        for slot in renpy.list_saved_games():
+        ## deletes all save games use with caution!
+        for slot in renpy.list_saved_games(fast=True):
             renpy.unlink_save(slot)
 
-        if delete_persistent:
-            renpy.persistent._clear(True)
-            renpy.save_persistent()
+        ## a Ren'Py relaunch is nessesary
+        renpy.quit(relaunch=True)
 
-        renpy.notify(_("All save files deleted."))
+init python:
+    # English display names for your languages
+    LANGUAGE_LABELS = {
+        "english": "English",
+        "spanish": "Spanish",
+        "french": "French",
+        "japanese": "Japanese",
+        "russian": "Russian",
+        "korean": "Korean"
+        # Add all languages you support
+    }
 
 ################################################################################
 ## Styles
@@ -293,7 +309,7 @@ screen quick_menu():
 
             #textbutton _("Back") action Rollback()
             textbutton _("History") action ShowMenu('history')
-            #textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
+            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
             #textbutton _("Auto") action Preference("auto-forward", "toggle")
             #textbutton _("Save") action ShowMenu('save')
             #textbutton _("Q.Save") action QuickSave()
@@ -415,7 +431,8 @@ screen navigation():
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.6
+
+        yalign 0.65
 
         spacing gui.navigation_spacing
 
@@ -445,7 +462,10 @@ screen navigation():
 
             textbutton _("Main Menu") action MainMenu()
 
-        textbutton _("Language") action ShowMenu("language")
+        textbutton _("Language") action ShowMenu("menu_lang")
+
+        if main_menu:
+            textbutton _("More Games") action ShowMenu("moregames")
 
         textbutton _("About") action ShowMenu("about")
 
@@ -453,6 +473,9 @@ screen navigation():
 
             ## Help isn't necessary or relevant to mobile devices.
             #textbutton _("Help") action ShowMenu("help")
+        
+        if config.developer and not main_menu:
+            textbutton "Debug Menu" action ShowMenu("debug_menu")
 
         if renpy.variant("pc"):
 
@@ -497,6 +520,15 @@ screen main_menu():
         timer 0.01 action Language(persistent.language)
     else:
         timer 0.01 action Language(renpy.get_language())
+
+    imagebutton:
+        idle "gui/cat.png"
+        hover "gui/catH.png"
+        xalign 0.03
+        yalign 0.97
+        action OpenURL("https://github.com/AndriuxDev/SoftMoney-Remastered")
+        hover_sound gui.hover_sound
+        activate_sound gui.activate_sound
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
@@ -696,20 +728,6 @@ style return_button:
 ## There's nothing special about this screen, and hence it also serves as an
 ## example of how to make a custom screen.
 
-screen language():
-    tag menu
-
-    use game_menu(_("Language"), scroll="viewport"):
-        vbox:
-            spacing 10
-            text _("Select your preferred language:")
-
-            for lang in renpy.known_languages():
-                $ lang_name = renpy.translate_string("language_" + lang, lang)
-                textbutton lang_name action [Language(lang), Function(lambda l=lang: setattr(persistent, "language", l)), Function(renpy.save_persistent)]
-
-            textbutton _("Back") action Return()
-
 screen about():
 
     tag menu
@@ -725,15 +743,16 @@ screen about():
 
             label "[config.name!t]"
             if "1." not in config.version:
-                text _("Version [config.version!t] - DEV BUILD\n")
+                text _("Version [config.version!t] - DEV BUILD\n") color "#999999"
             else:
-                text _("Version [config.version!t]\n")
+                text _("Version [config.version!t]\n") color "#999999"
 
             ## gui.about is usually set in options.rpy.
             if gui.about:
-                text "[gui.about!t]\n"
-
-            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
+                text "[gui.about!t]\n" color "#999999"
+            
+            text _("Inspiration by ShroomyChrist's \"BloodyMoney\". Flags made by {a=https://uiflags.app/}UI Flags{/a}. Fanmade Klingon and High Valyrian flags made by AndriuxDev.") color "#999999"
+            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]") color "#999999"
 
 
 style about_label is gui_label
@@ -909,20 +928,61 @@ screen preferences():
             hbox:
                 box_wrap True
 
-                if renpy.variant("pc") or renpy.variant("web"):
+                if not renpy.variant("mobile"):
 
                     vbox:
                         style_prefix "radio"
                         label _("Display")
-                        textbutton _("Window") action Preference("display", "window")
-                        textbutton _("Fullscreen") action Preference("display", "fullscreen")
+                        textbutton _("Window"):
+                            action Preference("display", "window")
+                            activate_sound gui.radio_sound
+                            hover_sound gui.hover_sound
+                        textbutton _("Fullscreen"):
+                            action Preference("display", "fullscreen")
+                            activate_sound gui.radio_sound
+                            hover_sound gui.hover_sound
+
+                    
+                    if preferences.fullscreen == False:
+
+                        vbox:
+                            style_prefix "radio"
+                            label _("Window Size")
+                            textbutton _("1920×1080"):
+                                action Preference("display", (1.0))
+                                activate_sound gui.radio_sound
+                                hover_sound gui.hover_sound
+
+                            textbutton _("1440×810"):
+                                action Preference("display", 0.75)
+                                activate_sound gui.radio_sound
+                                hover_sound gui.hover_sound
+
+                            textbutton _("960×540"):
+                                action Preference("display", 0.5)
+                                activate_sound gui.radio_sound
+                                hover_sound gui.hover_sound
+
+                            textbutton _("480×270"):
+                                action Preference("display", 0.25)
+                                activate_sound gui.radio_sound
+                                hover_sound gui.hover_sound
 
                 vbox:
                     style_prefix "check"
                     label _("Skip")
-                    textbutton _("Unseen Text") action Preference("skip", "toggle")
-                    textbutton _("After Choices") action Preference("after choices", "toggle")
-                    textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+                    textbutton _("Unseen Text"):
+                        action Preference("skip", "toggle")
+                        activate_sound gui.radio_sound
+                        hover_sound gui.hover_sound
+                    textbutton _("After Choices"):
+                        action Preference("after choices", "toggle")
+                        activate_sound gui.radio_sound
+                        hover_sound gui.hover_sound
+                    textbutton _("Transitions"):
+                        action InvertSelected(Preference("transitions", "toggle"))
+                        activate_sound gui.radio_sound
+                        hover_sound gui.hover_sound
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can
                 ## be added here, to add additional creator-defined preferences.
@@ -976,32 +1036,203 @@ screen preferences():
 
                         textbutton _("Mute All"):
                             action Preference("all mute", "toggle")
+                            activate_sound gui.activate_sound
+                            hover_sound gui.hover_sound
                             style "mute_all_button"
 
                 vbox:
-                    label _("Delete Saves?") # NOT WORKING YET
-    
-                    hbox:
-                        textbutton _("Delete All Saves"):
-                            action [Show("error_screen", message="This option isn’t implemented yet. You can delete save files manually on your system.")]
+                    if main_menu:
+                        label _("Game Data")
+        
+                        hbox:
+                            textbutton _("Reset Progress"):
+                                activate_sound gui.activate_sound
+                                hover_sound gui.hover_sound
+                                text_hover_color "#FF0000"
+                                action [Play("music", "audio/Neutral Ending.ogg"), Show("del_confirm1")]
 
-
-screen confirm_delete_saves():
+screen del_confirm1():
     modal True
     zorder 200
-
+    add Solid("#00000040")  # 50% black overlay
     frame:
         style "confirm_frame"
 
         vbox:
             spacing 15
-            label _("Delete all save files?") style "confirm_label"
-            text _("This action cannot be undone.") style "confirm_text"
+            text _("Delete all data in [config.name]?"):
+                style "confirm_label"
+                xalign 0.5
+
+            hbox:
+                xalign 0.5
+                spacing 100
+                textbutton _("No"):
+                    action [Hide("del_confirm1"), Play("music", "audio/MainMenu.mp3")]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+                textbutton _("Yes"):
+                    action [Hide("del_confirm1"), Show("del_confirm2")]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+
+screen del_confirm2():
+    modal True
+    zorder 200
+    add Solid("#00000080")  # 50% black overlay
+    frame:
+        style "confirm_frame"
+
+        vbox:
+            spacing 15
+            text _("Are you sure about that?\nHarvey might not be happy about it."):
+                style "confirm_label"
+                text_align 0.5
+                xalign 0.5
+
+            hbox:
+                xalign 0.5
+                spacing 100
+                textbutton _("No, don't."):
+                    action [Hide("del_confirm2"), Play("music", "audio/MainMenu.mp3")]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+                textbutton _("Yes, delete it."):
+                    action [Hide("del_confirm2"), Show("del_confirm3"), Play("audio","audio/SFX_Error.mp3")]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+
+screen del_confirm3():
+    modal True
+    zorder 200
+    add Solid("#000000ff")  # 50% black overlay
+    #add "delgrad" xsize config.screen_width ysize config.screen_height
+    frame:
+        style "confirm_frame"
+
+        vbox:
+            spacing 15
+            text _("This action can't be undone. No regrets?"):
+                style "confirm_label"
+                text_align 0.5
+                xalign 0.5
+                size 64
+            text _("All achievements, progress, and language settings will be permanently cleared.") style "confirm_text" xalign 0.5 text_align 0.5
+            text _("{color=#FF0000}Proceeding will restart the game with no memory of your past actions.{/color}") style "confirm_text" xalign 0.5 text_align 0.5
+
+
+            hbox:
+                xalign 0.5
+                spacing 100
+                textbutton _("Don't delete!"):
+                    action [Hide("del_confirm3"), Play("music", "audio/MainMenu.mp3")]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+                textbutton _("No regrets!"):
+                    action [Hide("del_confirm3"), Achievement.reset(), Function(reset_data)]
+                    activate_sound gui.activate_sound
+                    hover_sound gui.hover_sound
+                    text_hover_color "#FF0000"
+
+screen moregames():
+    tag menu
+
+    use game_menu(_("More Games"), scroll="viewport"):
+
+        frame:
+            background "#00000080"   # optional semi-transparent backdrop
+            xfill True
 
             hbox:
                 spacing 20
-                textbutton _("Cancel") action Return(False)
-                textbutton _("Delete All") action [Hide("confirm_delete_saves"), Function(delete_all_saves, confirm=False)]
+
+                # Game Icon
+                add Transform("icon-bm", zoom=0.3)
+
+                # Text Info
+                vbox:
+                    spacing 5
+
+                    text _("BloodMoney!") color "#FFFFFF" size 32
+                    text _("Author: ShroomyChrist") color "#CCCCCC"
+                    text _("A dark horror clicker where you earn cash for a life-saving operation by clicking and inflicting pain on a mysterious, pastel-colored man. How far will you go for $25,000?") color "#BBBBBB"
+
+                    textbutton _("Download Game!") xalign 0.5 action OpenURL("https://shroomychrist-studios.itch.io/bloodmoney") hover_sound gui.hover_sound activate_sound gui.activate_sound
+
+        frame:
+            background "#00000080"   # optional semi-transparent backdrop
+            xfill True
+
+            hbox:
+                spacing 20
+
+                # Game Icon
+                add Transform("icon-hep", zoom=0.3)
+
+                # Text Info
+                vbox:
+                    spacing 5
+
+                    text _("BloodMoney: Human Expenditure Program") color "#FFFFFF" size 32
+                    text _("Author: ShroomyChrist") color "#CCCCCC"
+                    text _("The official sequel to BloodMoney! Experience a psychological horror sim where you are tasked with the chilling care and maintenance of Harvey Harvington. Monitor his vitals and follow the rules, or face the consequences of the Program.") color "#BBBBBB"
+
+                    textbutton _("Download Game!") xalign 0.5 action OpenURL("https://shroomychrist-studios.itch.io/human-expenditure-program") hover_sound gui.hover_sound activate_sound gui.activate_sound
+
+        frame:
+            background "#00000080"   # optional semi-transparent backdrop
+            xfill True
+
+            hbox:
+                spacing 20
+
+                # Game Icon
+                add Transform("icon-lm", zoom=0.3)
+
+                # Text Info
+                vbox:
+                    spacing 5
+
+                    text _("LoveMoney!") color "#FFFFFF" size 32
+                    text _("Author: buwu3") color "#CCCCCC"
+                    text _("Forget the hammers and needles—it's time for hugs and kisses! This fan-made spin-off lets you shower Harvey Harvington with love to earn the $25,000 you need. A romantic, spicy journey to steal a man's heart, one compliment at a time!") color "#BBBBBB"
+
+                    textbutton _("Download Game!") xalign 0.5:
+                        hover_sound gui.hover_sound activate_sound gui.activate_sound
+                        action Show(
+                            screen="confirm",
+                            message="This game contains {color=#AA0000}NSFW themes{/color}.\nThe material shown in this game may not be suitable for all audiences.\nAre you sure you want to proceed anyway?",
+                            yes_action=[Hide("confirm"), OpenURL("https://buwu3.itch.io/llllollll")],           # what to do if user selects YES
+                            no_action=[Hide("confirm")]  # what to do if NO
+                        )
+
+        frame:
+            background "#00000080"   # optional semi-transparent backdrop
+            xfill True
+
+            hbox:
+                spacing 20
+
+                # Game Icon
+                add Transform("icon-sm", zoom=0.3)
+
+                # Text Info
+                vbox:
+                    spacing 5
+
+                    text _("SoftMoney (Original)") color "#FFFFFF" size 32
+                    text _("Author: paper pepper") color "#CCCCCC"
+                    text _("Tired of seeing Harvey suffer again and again? Think he deserves better? Then this game is for you! Same $25,000 operation, same roadside stall, same $1 per click—but with one big change: Harvey doesn't suffer anymore.") color "#BBBBBB"
+
+                    textbutton _("Download Game!") xalign 0.5:
+                        hover_sound gui.hover_sound activate_sound gui.activate_sound
+                        action Show(
+                            screen="confirm",
+                            message="This game contains... {color=#AA00AA}wholesome themes{/color}.\nIt could be too much cuteness for you.\nAre you sure you have what it takes to proceed?",
+                            yes_action=[Hide("confirm"), OpenURL("https://paper-pepper.itch.io/softmoney")],           # what to do if user selects YES
+                            no_action=[Hide("confirm")]  # what to do if NO
+                        )
+
 
 
 style pref_label is gui_label
@@ -1367,9 +1598,11 @@ screen confirm(message, yes_action, no_action):
 
                 textbutton _("Yes"):
                     action yes_action
+                    hover_sound gui.hover_sound
                     activate_sound gui.activate_sound
                 textbutton _("No"):
                     action no_action
+                    hover_sound gui.hover_sound
                     activate_sound gui.activate_sound
 
     ## Right-click and escape answer "no".
@@ -1400,6 +1633,173 @@ style confirm_button:
 style confirm_button_text:
     properties gui.text_properties("confirm_button")
 
+
+## Language selection screens ###################################################
+##
+## These screens indicate selecting a language, duh.
+
+screen menu_lang():
+    tag menu
+
+    use game_menu(_("Language"), scroll="viewport"):
+        vbox:
+            spacing 10
+            text _("Select your preferred language:")
+
+            for lang in renpy.known_languages():
+
+                $ key = "language_" + lang
+                $ lang_name = renpy.translate_string(key, key)
+
+                textbutton lang_name:
+                    action [
+                        Language(lang),
+                        Function(lambda l=lang: setattr(persistent, "language", l)),
+                        Function(renpy.save_persistent)
+                    ]
+                    hover_sound gui.hover_sound
+                    activate_sound gui.activate_sound
+
+screen language_select_screen():
+
+    tag menu
+    modal True
+    add "bg bglang"
+    # Full-screen frame background
+    add "gui/frame.png" xsize 700 ysize 700 xalign 0.5 yalign 0.5
+
+    fixed:
+        at default_transition
+        xalign 0.5
+        yalign 0.5
+
+        vbox:
+            spacing 40
+            xalign 0.5
+            yalign 0.5
+
+            # Title
+            text "Choose your language!" size 50 xalign 0.5
+
+            # Scrollable buttons
+            frame:
+                background None
+                padding (25, 25)
+                xalign 0.5
+                yalign 0.5
+
+                viewport:
+                    draggable True
+                    mousewheel True
+                    scrollbars "vertical"
+                    xysize (500, 400)
+                    xalign 0.5
+                    yalign 0.5
+
+                    vbox:
+                        spacing 20
+                        xalign 0.5
+
+                        # Main languages
+                        for lang in [("English","flag_EN","english"),
+                                    ("Español","flag_SP","spanish"),
+                                    ("Français","flag_FR","french"),
+                                    ("Русский","flag_RU","russian"),
+                                    ("{font=ZenMaruGothic-Bold.ttf}日本語{/font}","flag_JP","japanese"),
+                                    ("{font=CookieRun Bold.ttf}한국인{/font}","flag_KR","korean")]:
+
+                            $ text_label, flag_image, return_val = lang
+
+                            button:
+                                action Return(return_val)
+                                xalign 0.5
+                                hover_sound gui.hover_sound
+                                activate_sound gui.activate_sound
+                                hbox:
+                                    spacing 10
+                                    add flag_image
+                                    text text_label size 30 color "#FFFFFF" hover_color "#FFFF00"
+
+                        # “Other Languages” button
+                        button:
+                            action Return("other_languages")
+                            xalign 0.5
+                            hover_sound gui.hover_sound
+                            activate_sound gui.activate_sound
+                            hbox:
+                                spacing 10
+                                add "flag_UNK"
+                                text "Other Languages" size 30 color "#FFFFFF" hover_color "#FFFF00"
+
+            text "Scroll to see more" size 22 xalign 0.5
+
+screen other_languages_screen():
+
+    tag menu
+    modal True
+    add "bg bglang"
+    # Full-screen frame background
+    add "gui/frame.png" xsize 700 ysize 700 xalign 0.5 yalign 0.5
+
+    fixed:
+        at default_transition
+        xalign 0.5
+        yalign 0.5
+
+        vbox:
+            spacing 40
+            xalign 0.5
+            yalign 0.5
+
+            # Title
+            text "Other Languages" size 50 xalign 0.5
+
+            # Scrollable joke languages
+            frame:
+                background None
+                padding (25, 25)
+                xalign 0.5
+                yalign 0.5
+
+                viewport:
+                    draggable True
+                    mousewheel True
+                    scrollbars "vertical"
+                    xysize (500, 400)
+                    xalign 0.5
+                    yalign 0.5
+
+                    vbox:
+                        spacing 20
+                        xalign 0.5
+
+                        # Joke languages
+                        for lang in [("High Valyrian","flag_HV","valyrian"),
+                                    ("Klingon","flag_TLH","klingon")]:
+
+                            $ text_label, flag_image, return_val = lang
+
+                            button:
+                                action Return(return_val)
+                                xalign 0.5
+                                hover_sound gui.hover_sound
+                                activate_sound gui.activate_sound
+                                hbox:
+                                    spacing 10
+                                    add flag_image
+                                    text text_label size 30 color "#FFFFFF" hover_color "#FFFF00"
+
+                        # Back button
+                        button:
+                            action Return("back")
+                            xalign 0.5
+                            hover_sound gui.hover_sound
+                            activate_sound gui.activate_sound
+                            hbox:
+                                spacing 10
+                                text "Back" size 30 color "#FFFFFF" hover_color "#FFFF00"
+
+            text "Scroll to see more" size 22 xalign 0.5
 
 ## Skip indicator screen #######################################################
 ##
@@ -1729,9 +2129,9 @@ screen quick_menu():
             style "quick_menu"
             style_prefix "quick"
 
-            textbutton _("Back") action Rollback()
+            #textbutton _("Back") action Rollback()
             textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
-            textbutton _("Auto") action Preference("auto-forward", "toggle")
+            #textbutton _("Auto") action Preference("auto-forward", "toggle")
             textbutton _("Menu") action ShowMenu("preferences")
 
 
@@ -1818,3 +2218,182 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 900
+
+############################################################
+# TABBED DEBUG MENU
+############################################################
+
+screen debug_menu():
+
+    tag menu
+    modal True
+
+    use game_menu(_("Debug Menu")):
+
+        vbox:
+            spacing 20
+
+            # ------------------------------------------------------------
+            # TABS
+            # ------------------------------------------------------------
+            hbox:
+                spacing 10
+
+                textbutton "General" action SetVariable("debug_tab", "general")
+                textbutton "Unlocks" action SetVariable("debug_tab", "unlocks")
+                textbutton "Interactions" action SetVariable("debug_tab", "interactions")
+                textbutton "Endings" action SetVariable("debug_tab", "endings")
+
+            null height 20
+
+            # ------------------------------------------------------------
+            # TAB CONTENT
+            # ------------------------------------------------------------
+            if debug_tab == "general":
+
+                text "General Controls" size 32
+
+                hbox:
+                    spacing 10
+                    text "Money: [money]" size 26
+                    textbutton "+100" action SetVariable("money", money + 100)
+                    textbutton "+1000" action SetVariable("money", money + 1000)
+                    textbutton "Reset" action SetVariable("money", 0)
+
+                null height 15
+
+                text "Quick Flags" size 28
+
+                vbox:
+                    hbox:
+                        text "poke1: [poke1]"
+                        textbutton "Toggle" action ToggleVariable("poke1")
+
+
+            elif debug_tab == "unlocks":
+
+                text "Unlockable Items" size 32
+
+                grid 2 6 spacing 10:
+
+                    text "Hi-5 (item1): [unlockitem1]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem1")
+
+                    text "Handshake (item2): [unlockitem2]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem2")
+
+                    text "Headpat (item3): [unlockitem3]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem3")
+
+                    text "Massage (item4): [unlockitem4]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem4")
+
+                    text "Hug (item5): [unlockitem5]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem5")
+
+                    text "Comb (item6): [unlockitem6]"
+                    textbutton "Toggle" action ToggleVariable("unlockitem6")
+
+
+            elif debug_tab == "interactions":
+
+                text "Interaction Flags" size 32
+
+                viewport:
+                    mousewheel True
+                    draggable True
+                    scrollbars "vertical"
+
+                    vbox:
+                        spacing 20
+
+                        # Hi-Fives
+                        text "--- Hi-Fives ---" size 26
+                        for n in range(1, 6):
+                            hbox:
+                                text f"hifive{n}: [{globals()[f'hifive{n}']}]"
+                                textbutton "Toggle" action ToggleVariable(f"hifive{n}")
+
+                        # Handshakes
+                        text "--- Handshakes ---" size 26
+                        for n in range(1, 6):
+                            hbox:
+                                text f"hand{n}: [{globals()[f'hand{n}']}]"
+                                textbutton "Toggle" action ToggleVariable(f"hand{n}")
+
+                        # Headpats
+                        text "--- Headpats ---" size 26
+                        for n in range(1, 6):
+                            hbox:
+                                text f"pathead{n}: [{globals()[f'pathead{n}']}]"
+                                textbutton "Toggle" action ToggleVariable(f"pathead{n}")
+
+                        # Massages
+                        text "--- Massages ---" size 26
+                        for n in range(1, 6):
+                            hbox:
+                                text f"masg{n}: [{globals()[f'masg{n}']}]"
+                                textbutton "Toggle" action ToggleVariable(f"masg{n}")
+
+                        # Hugs
+                        text "--- Hugs ---" size 26
+                        for n in range(0, 6):
+                            hbox:
+                                text f"hug{n}: [{globals()[f'hug{n}']}]"
+                                textbutton "Toggle" action ToggleVariable(f"hug{n}")
+
+
+            elif debug_tab == "endings":
+
+                text "Ending Flags" size 32
+
+                vbox:
+                    spacing 10
+                    for n in range(1, 4):
+                        hbox:
+                            text f"endflag{n}: [{globals()[f'endflag{n}']}]"
+                            textbutton "Toggle" action ToggleVariable(f"endflag{n}")
+
+            null height 40
+    
+default loading_progress = 0.0
+
+screen loading_screen():
+    modal True
+    zorder 200
+
+    # Semi-transparent overlay
+    add Solid("#00000040")
+
+    # Timer to animate the progress
+    timer 0.07 repeat True action If(
+        loading_progress < 1.0,
+        SetVariable("loading_progress", loading_progress + 0.01),
+        [Hide("loading_screen"), Return()]
+    )
+
+    text "{font=ArchiveUkr-Regular.ttf}Please wait...{/font}":
+        xalign 0.5
+        yalign 0.3
+        size 60
+        color "#FFFFFF"
+        outlines [(2, "#000000", 0, 0)]
+
+    # Percentage text
+    text "{font=ArchiveUkr-Regular.ttf}[int(loading_progress * 100)]%{/font}":
+        xalign 0.5
+        yalign 0.5
+        size 256
+        color "#FFFFFF"
+        outlines [(2, "#000000", 0, 0)]
+
+    add "gui/presplash_background2.png" xalign 0.5 yalign 0.8
+    # Cropped fill bar using tuple-based Crop
+    add Crop((0, 0, int(loading_progress * 400), 50), "gui/presplash_background.png"):
+        xpos 760
+        yalign 0.8
+
+
+    # Frame overlay
+    add "gui/presplash_foreground.png" xalign 0.5 yalign 0.8
+

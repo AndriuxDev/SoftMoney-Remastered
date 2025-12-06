@@ -1,4 +1,5 @@
-label ending1: 
+label ending1:
+    window auto
     scene black with dissolve
     pause 1.0
     scene bg end1 with dissolve
@@ -18,11 +19,11 @@ label ending1:
     return
 
 label ending2:
+    window auto
     scene black with dissolve
-    stop music fadeout 1.0
     pause 1.0
     play music t4
-    scene bg end1 with dissolve
+    scene bg end2 with dissolve
     "Satisfied, you get into your car. Now you have enough money to pay for the surgery."
     "Harvey awkwardly waved goodbye, and with a smile, you drove away."
     "It seemed like he wanted to tell you something important, but couldn’t bring himself to say it."
@@ -39,6 +40,7 @@ label ending2:
     return
 
 label ending3:
+    window auto
     scene black with dissolve
     pause 1.0
     scene bg end2 with dissolve
@@ -55,12 +57,15 @@ label ending3:
     "You felt a wave of gratitude and curiosity. An anonymous benefactor? But who could it be?"
     "You thought about Harvey and wondered if he was involved."
     scene black with fade
+    stop music fadeout 1.0
     pause 3.0
-    play music birbs fadein 3.0
+    play music birbs fadein 1.0
     pause 3.0
     "The next morning, you went to Harvey's address to thank him."
     "You even brought a small gift as a token of your appreciation."
     scene bg end5 with dissolve
+    pause 1.0
+    play audio doorknock
     "You knocked on the door, but there was no answer."
     player "..."
     scene bg end7

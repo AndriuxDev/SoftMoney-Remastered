@@ -112,7 +112,7 @@ define ending1 = Achievement(
     ## you have set up in the Steam backend (if using).
     id="hardworker",
     ## Description.
-    description=_("Earn $25,000 and get the sad ending."),
+    description=_("Earn $25,000 without reaching the hug item and get the normal ending."),
     ## The image used in the popup and in the gallery once this achievement
     ## is unlocked.
     unlocked_image="achievements/end1ach.png",
@@ -137,7 +137,7 @@ define ending2 = Achievement(
     ## you have set up in the Steam backend (if using).
     id="friendlycollector",
     ## Description.
-    description=_("Earn $25,000, get all items but the comb and earn the good ending."),
+    description=_("Earn $25,000, get all items but the comb and earn the sad ending."),
     ## The image used in the popup and in the gallery once this achievement
     ## is unlocked.
     unlocked_image="achievements/end2ach.png",
@@ -184,7 +184,7 @@ define hiddencomb = Achievement(
     description=_("Buy a comb for Harvey with your money."),
     unlocked_image=Transform("achievements/combach.png"),
     ## The important bit that hides the name and description
-    hide_name=True, hide_description=True,
+    hide_name=_("???"), hide_description=_("Harvey's hair is kept with care, a kind small gift shows you're there."),
 )
 
 ## Example 8 ###################################################################
@@ -383,6 +383,7 @@ screen achievement_gallery():
         text_hover_color gui.hover_color
         align (1.0, 1.0)
         activate_sound gui.activate_sound
+        hover_sound gui.hover_sound
     viewport:
         mousewheel True draggable True pagekeys True
         scrollbars "vertical"
@@ -463,10 +464,12 @@ screen achievement_gallery():
     ## will reset all achievement progress at once. It can also be provided
     ## to players if you'd like them to be able to reset their achievement
     ## progress.
-    textbutton "Reset All":
-        action Achievement.Reset()
-        align (1.0, 0.0)
-        activate_sound gui.activate_sound
+
+    if config.developer == True:
+        textbutton "Reset All":
+            action Achievement.Reset()
+            align (1.0, 0.0)
+            activate_sound gui.activate_sound
 
 style achievement_button:
     size_group 'achievement'
