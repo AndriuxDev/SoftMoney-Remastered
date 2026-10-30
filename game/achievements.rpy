@@ -187,6 +187,24 @@ define hiddencomb = Achievement(
     hide_name=_("???"), hide_description=_("Harvey's hair is kept with care, a kind small gift shows you're there."),
 )
 
+define hiddenhalloween = Achievement(
+    name=_("Trick or Treat?"),
+    id="halloween",
+    description=_("Play the game during Halloween (October 30th-31st)."),
+    unlocked_image=Transform("achievements/halloweenach.png"),
+    hide_name=_("???"),
+    hide_description=_("When autumn nights grow dark and strange, a little visit might not feel so strange.")
+)
+
+define hiddenchristmas = Achievement(
+    name=_("A Little Christmas Magic"),
+    id="christmas",
+    description=_("Play the game during Christmas (December 24th-25th)."),
+    unlocked_image=Transform("achievements/christmasach.png"),
+    hide_name=_("???"),
+    hide_description=_("When bells are ringing and snowflakes fall, a special surprise awaits those who call.")
+)
+
 ## Example 8 ###################################################################
 ## This -2 makes sure it's declared before the other achievements. This is
 ## so it shows up first in the list even though it's defined all the way down

@@ -12,6 +12,14 @@ init -1 style navigation_button:
     hover_sound gui.hover_sound
     activate_sound gui.activate_sound
 
+init -501 python:
+    import datetime
+
+    # Obtener la fecha actual
+    today = datetime.date.today()
+    month = today.month
+    day = today.day
+
 init -501 screen name_input(message, ok_action):
     modal True
     zorder 200
@@ -482,7 +490,11 @@ screen navigation():
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
             textbutton _("Quit") action Quit(confirm="not main_menu")
-
+        
+    if month == 10 and day in (30, 31):
+        add "gui/difum.png":
+            xysize (config.screen_width, config.screen_height)
+            alpha 0.5
 
 style navigation_button is gui_button
 style navigation_button_text is gui_button_text
@@ -502,7 +514,7 @@ style navigation_button_text:
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
 screen main_menu():
-
+    
     ## This ensures that any other menu screen is replaced.
     tag menu
     add gui.main_menu_background
@@ -510,8 +522,15 @@ screen main_menu():
     ## This empty frame darkens the main menu.
     frame:
         style "main_menu_frame"
-        add gui.char_menu
-        add gui.main_menu_logo zoom 0.7 xalign 0.0 yalign 0.0
+
+        if today.month == 10 and today.day in (30, 31):
+            add gui.char_menu_empty
+        else:
+            add gui.char_menu
+        add update_main_menu_logo():
+            zoom 0.7
+            xalign 0.0
+            yalign 0.0
 
     ## Auto-set language from persistent.language when main menu opens.
     ## Uses the Language action (same as the Language buttons elsewhere).
@@ -554,6 +573,10 @@ screen main_menu():
                 size 30
                 xalign 1.0  # align the whole vbox to the right
                 xmaximum 800  # optional: max width for alignment
+    
+    if month == 12 and day in [24, 25]:
+        add Snow("gui/snow1.png")
+        add Snow("gui/snow2.png")
 
 
 style main_menu_frame is empty
@@ -1068,7 +1091,7 @@ screen del_confirm1():
                 xalign 0.5
                 spacing 100
                 textbutton _("No"):
-                    action [Hide("del_confirm1"), Play("music", "audio/MainMenu.mp3")]
+                    action [Hide("del_confirm1"), Play("music", config.main_menu_music)]
                     activate_sound gui.activate_sound
                     hover_sound gui.hover_sound
                 textbutton _("Yes"):
@@ -1094,7 +1117,7 @@ screen del_confirm2():
                 xalign 0.5
                 spacing 100
                 textbutton _("No, don't."):
-                    action [Hide("del_confirm2"), Play("music", "audio/MainMenu.mp3")]
+                    action [Hide("del_confirm2"), Play("music", config.main_menu_music)]
                     activate_sound gui.activate_sound
                     hover_sound gui.hover_sound
                 textbutton _("Yes, delete it."):
@@ -1125,7 +1148,7 @@ screen del_confirm3():
                 xalign 0.5
                 spacing 100
                 textbutton _("Don't delete!"):
-                    action [Hide("del_confirm3"), Play("music", "audio/MainMenu.mp3")]
+                    action [Hide("del_confirm3"), Play("music", config.main_menu_music)]
                     activate_sound gui.activate_sound
                     hover_sound gui.hover_sound
                 textbutton _("No regrets!"):
@@ -1230,6 +1253,34 @@ screen moregames():
                             screen="confirm",
                             message="This game contains... {color=#AA00AA}wholesome themes{/color}.\nIt could be too much cuteness for you.\nAre you sure you have what it takes to proceed?",
                             yes_action=[Hide("confirm"), OpenURL("https://paper-pepper.itch.io/softmoney")],           # what to do if user selects YES
+                            no_action=[Hide("confirm")]  # what to do if NO
+                        )
+        
+        frame:
+            background "#00000080"   # optional semi-transparent backdrop
+            xfill True
+
+            hbox:
+                spacing 20
+
+                # Game Icon
+                add Transform("icon-bmReq", zoom=0.3)
+
+                # Text Info
+                vbox:
+                    spacing 5
+
+                    text _("BloodMoney: Requiem") color "#FFFFFF" size 32
+                    text _("Author: ShroomyChrist") color "#CCCCCC"
+                    text _("Return to the world of BLOODMONEY in Requiem, a psychological horror experience from SHROOMYCHRIST. Step into a disturbing new chapter where every choice comes at a cost.") color "#BBBBBB"
+
+                    textbutton _("Get BLOODMONEY: Requiem on Steam!") xalign 0.5:
+                        hover_sound gui.hover_sound activate_sound gui.activate_sound
+                        text_hover_color "#FF3333" 
+                        action Show(
+                            screen="confirm",
+                            message="This game contains... {color=#B5121B}psychological horror, disturbing themes, and unsettling content{/color}.\nYour choices may have consequences.\nAre you sure you want to proceed?",
+                            yes_action=[Hide("confirm"), OpenURL("https://store.steampowered.com/app/5044390/")],           # what to do if user selects YES
                             no_action=[Hide("confirm")]  # what to do if NO
                         )
 

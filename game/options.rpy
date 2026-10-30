@@ -22,7 +22,7 @@ define gui.show_name = True
 
 ## The version of the game.
 
-define config.version = "1.0"
+define config.version = "1.2"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
@@ -58,7 +58,22 @@ define config.sample_sound = "SFX_Money.ogg"
 ## the player is at the main menu. This file will continue playing into the
 ## game, until it is stopped or another file is played.
 
-define config.main_menu_music = audio.t0a
+init -501 python:
+    import datetime
+
+    def get_main_menu_music():
+        today = datetime.date.today()
+
+        if today.month == 10 and today.day in (30, 31):
+            return "audio/MainMenu-HW.mp3"
+        if today.month == 12 and today.day in (24, 25):
+            return "audio/MainMenu-XM.mp3"
+        else:
+            return "audio/MainMenu.mp3"
+
+    config.main_menu_music = get_main_menu_music()
+
+    
 define config.has_autosave = False
 define config.has_quicksave = False
 define config.developer = False
@@ -162,8 +177,8 @@ init -501 python:
     month = today.month
     day = today.day
 
-    # Halloween: October 31st
-    if month == 10 and day == 31:
+    # Halloween: October 30th-31st
+    if month == 10 and day in (30, 31):
         config.window_icon = "gui/window_icon_halloween.png"
 
     # Christmas: December 24-25

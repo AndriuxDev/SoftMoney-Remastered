@@ -64,7 +64,7 @@ label start:
         window hide
         stop music fadeout 5.0
         pause 7.0
-        call maingame
+        call maingame from _call_maingame
     
     pause 2.0
 

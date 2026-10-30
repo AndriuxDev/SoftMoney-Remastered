@@ -1,5 +1,8 @@
 ## Music
-define audio.t0a = "audio/MainMenu.mp3"
+define audio.t0a = "audio/MainMenu.mp3" # Main Menu (Normal)
+define audio.t0b = "audio/MainMenu-HW.mp3" # Main Menu (Halloween Variant)
+define audio.t0c = "audio/MainMenu-XM.mp3" # Main Menu (Christmas Variant)
+
 define audio.t1 = "audio/Dune.mp3"
 define audio.t2 = "audio/Intro.ogg"
 define audio.t3 = "audio/Music Normal.ogg"
@@ -147,6 +150,7 @@ image harvey 3d1h = "images/3d1h.png"
 # --- More Games ---
 image icon0 = "moregames/icon0.png"        # Test icon
 image icon-bm = "moregames/icon-bm.png"
+image icon-bmReq = "moregames/icon-bmReq.png"
 image icon-hep = "moregames/icon-hep.png"
 image icon-lm = "moregames/icon-lm.png"
 image icon-sm = "moregames/icon-sm.png"

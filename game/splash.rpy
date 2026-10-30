@@ -2,6 +2,13 @@ init python:
     import os
     import subprocess
 
+    def reset_font():
+        gui.text_font = "IBMPlexSans-Bold.ttf"
+        gui.name_text_font = "IBMPlexSans-Bold.ttf"
+        gui.interface_text_font = "IBMPlexSans-Bold.ttf"
+        gui.button_text_font = "IBMPlexSans-Bold.ttf"
+        gui.choice_button_text_font = "IBMPlexSans-Bold.ttf"
+
 default seen_langwarn = False
 
 default splash_EN = [
@@ -97,6 +104,51 @@ default splash_ES = [
     "Restaurado con amor, pulido con intención.",
 ]
 
+default splash_JP = [
+
+    "ゴアフリー認証済み。武器を捨ててください。",
+    "非暴力モード有効。BloodMoney ファンの皆様、申し訳ございません。",
+    "スクイッシュフリー認証済み。この先は優しさのみ。",
+    "このタイムラインには流血はありません。平和的に進めてください。"
+
+    "この実行はプログラムによって制御されません。",
+    "HEP オーバーライド失敗: ユーザーは自律性を維持します。",
+    "予定外の感情的不安定が検出されました。\"不正\"としてフラグ付けします。",
+    "HEP 通知: このシナリオは承認された希望レベルを超えています。",
+
+    "NSFW なし。純粋な健全さのみ。どういたしまして。",
+    "この VN には、抱きしめられることが許可された、コンテンツ警告のない優しさが含まれています。",
+    "NSFW? 結構です。私たちは癒しのみを提供します。",
+    "\"優しさ\"ロック解除。わいせつ行為はお断り。",
+
+    "ペーパーペッパー、君へ。私 (アンドリウクスデヴ) はベストを尽くしたよ。",
+    "ペーパーペッパーにインスパイアされて。丁寧にリミックスしました。",
+    "ソフトクラシックのソフトリブート。",
+    "愛情を込めて修復し、意図を込めて磨き上げました。"
+]
+
+default splash_KR = [
+    "고어 없음 인증 완료. 무기는 내려놓으세요.",
+    "비폭력 모드 활성화. 유혈 팬 여러분, 죄송합니다.",
+    "찌그러짐 없음 인증. 앞으로는 부드러움만 있습니다.",
+    "이 타임라인에는 피가 없습니다. 평화롭게 진행하세요.",
+
+    "프로그램은 이 진행을 통제할 수 없습니다.",
+    "HEP 재정의 실패: 사용자의 자율성 유지됨.",
+    "예정되지 않은 감정적 안정 감지. '무허가'로 분류.",
+    "HEP 공지: 이 시나리오는 허용된 희망 수준을 초과합니다.",
+
+    "성인 콘텐츠 없음. 순수한 위로만 있습니다. 환영합니다.",
+    "이 비주얼노벨에는 포옹 가능, 주의사항 없는 부드러움이 담겨 있습니다.",
+    "성인 콘텐츠? 사양합니다. 우리는 위로만 제공합니다.",
+    "부드러움 해금. 음란함 차단.",
+
+    "당신을 위해, 페이퍼 페퍼. 저(안드릭스데브)는 최선을 다했습니다.",
+    "페이퍼 페퍼에게 영감을 받아. 정성껏 리믹스했습니다.",
+    "부드러운 클래식의 부드러운 재시작.",
+    "사랑으로 복원하고, 의도를 담아 연마했습니다."
+]
+
 label splashscreen:
 
     python:
@@ -186,6 +238,8 @@ label language_select_loop:
             return
     
     if seen_langwarn == False:
+        $ reset_font()
+
         $ setattr(config, "name", "SoftMoney Remastered")
         $ seen_langwarn = True
         pause 2.0
@@ -219,11 +273,11 @@ label language_select_loop:
 
     if choice == "japanese":
         show bg bglang
-        jump unav_lang
+        jump confirm_japanese
     
     if choice == "korean":
         show bg bglang
-        jump unav_lang
+        jump confirm_korean
 
     # JOKE LANGUAGES -------------------------------------------------------
 
@@ -337,6 +391,43 @@ label confirm_russian:
             pause 0.5
             jump language_select_loop
 
+label confirm_japanese:
+    pause 0.5
+    window show
+    menu:
+        "{font=ZenMaruGothic-Bold.ttf}日本語に設定しますか？{/font}"  # (Do you want to set the language to Japanese?)
+        "{font=ZenMaruGothic-Bold.ttf}はい！{/font}":
+            play sound notify
+            $ persistent.language = "japanese"
+            "{font=ZenMaruGothic-Bold.ttf}了解しました！ハーヴィーの会話やその他のテキストが日本語になります。{/font}"
+            "{font=ZenMaruGothic-Bold.ttf}設定メニューからいつでも言語を変更できます。{/font}"
+            window hide
+            stop music fadeout 2.0
+            jump after_language_selection
+        "{font=ZenMaruGothic-Bold.ttf}いいえ...{/font}":
+            window hide
+            pause 0.5
+            jump language_select_loop
+
+label confirm_korean:
+    pause 0.5
+    window show
+    menu:
+        "{font=CookieRun Bold.ttf}언어를 한국어로 설정하시겠습니까?{/font}"  # (Do you want to set the language to Korean?)
+        "{font=CookieRun Bold.ttf}네!{/font}":
+            play sound notify
+            $ persistent.language = "korean"
+            "{font=CookieRun Bold.ttf}알겠습니다! 하비의 대화와 다른 텍스트는 이제 한국어로 표시됩니다.{/font}"
+            "{font=CookieRun Bold.ttf}설정 메뉴에서 언제든지 언어를 변경할 수 있습니다.{/font}"
+            window hide
+            stop music fadeout 2.0
+            jump after_language_selection
+        "{font=CookieRun Bold.ttf}아니요...{/font}":
+            window hide
+            pause 0.5
+            jump language_select_loop
+
+
 label unav_lang:
     pause 0.5
     window show
@@ -347,6 +438,7 @@ label unav_lang:
     jump language_select_loop
 
 label after_language_selection:
+    $ Language(persistent.language)
     hide bg bglang with Dissolve(2.0)
     pause 1.0
     scene white with Dissolve(2.0)
@@ -375,25 +467,39 @@ label after_language_selection:
                 "confirm": "I understand and wish to continue."
             },
             "spanish": {
-                "welcome": "Bienvenido a SoftMoney Remastered.",
+                "welcome": "Bienvenido a SoftMoney Remasterizado.",
                 "desc": "Esta es una experiencia suave y reflexiva sobre el cuidado, el esfuerzo y la conexión.",
-                "warning": "SoftMoney Remastered no contiene contenido violento ni angustiante, pero sí explora temas emocionales y el estrés financiero de una manera ligera y humana.",
+                "warning": "SoftMoney Remasterizado no contiene contenido violento ni angustiante, pero sí explora temas emocionales y el estrés financiero de una manera ligera y humana.",
                 "menu": "Por favor confirme que está listo para comenzar su experiencia.",
                 "confirm": "Entiendo y deseo continuar."
             },
             "french": {
-                "welcome": "Bienvenue dans SoftMoney Remastered.",
+                "welcome": "Bienvenue dans SoftMoney Remasterisé.",
                 "desc": "C'est une expérience douce et réfléchie sur le soin, l'effort et la connexion.",
-                "warning": "SoftMoney Remastered ne contient pas de contenu violent ou pénible, mais explore des thèmes émotionnels et le stress financier de manière légère et humaine.",
+                "warning": "SoftMoney Remasterisé ne contient pas de contenu violent ou pénible, mais explore des thèmes émotionnels et le stress financier de manière légère et humaine.",
                 "menu": "Veuillez confirmer que vous êtes prêt à commencer votre expérience.",
                 "confirm": "Je comprends et souhaite continuer."
             },
             "russian": {
-                "welcome": "Добро пожаловать в SoftMoney Remastered.",
+                "welcome": "Добро пожаловать в SoftMoney Ремастер.",
                 "desc": "Это мягкий и задумчивый опыт о заботе, усилиях и связи.",
-                "warning": "SoftMoney Remastered не содержит жестокого или травмирующего контента, но затрагивает эмоциональные темы и финансовый стресс бережным, человеческим образом.",
+                "warning": "SoftMoney Ремастер не содержит жестокого или травмирующего контента, но затрагивает эмоциональные темы и финансовый стресс бережным, человеческим образом.",
                 "menu": "Пожалуйста, подтвердите, что вы готовы начать свой опыт.",
                 "confirm": "Я понимаю и хочу продолжить."
+            },
+            "japanese": {
+                "welcome": "{font=ZenMaruGothic-Bold.ttf}ソフトマネー リマスターへようこそ。{/font}",
+                "desc": "{font=ZenMaruGothic-Bold.ttf}これは、ケア、努力、そして繋がりについての柔らかく、思慮深い体験です。{/font}",
+                "warning": "{font=ZenMaruGothic-Bold.ttf}ソフトマネー リマスターには過激な内容やトラウマを引き起こすコンテンツは含まれていませんが、感情的なテーマや経済的なストレスを丁寧で人間的な方法で扱っています。{/font}",
+                "menu": "{font=ZenMaruGothic-Bold.ttf}体験を始める準備ができたことを確認してください。{/font}",
+                "confirm": "{font=ZenMaruGothic-Bold.ttf}理解し、続行したいです。{/font}"
+            },
+            "korean": {
+                "welcome": "{font=CookieRun Bold.ttf}소프트머니 리마스터에 오신 것을 환영합니다.{/font}",
+                "desc": "{font=CookieRun Bold.ttf}이것은 돌봄, 노력, 그리고 연결에 대한 부드럽고 사려 깊은 경험입니다.{/font}",
+                "warning": "{font=CookieRun Bold.ttf}소프트머니 리마스터는 폭력적이거나 트라우마를 유발하는 콘텐츠를 포함하지 않지만, 감정적인 주제와 재정적 스트레스를 섬세하고 인간적인 방식으로 다룹니다.{/font}",
+                "menu": "{font=CookieRun Bold.ttf}경험을 시작할 준비가 되었는지 확인해주세요.{/font}",
+                "confirm": "{font=CookieRun Bold.ttf}이해하고 계속 진행하겠습니다.{/font}"
             }
         }
 
@@ -419,11 +525,11 @@ label after_language_selection:
 
     scene white with Dissolve(3.0)
 
-    call game_boot
+    call game_boot from _call_game_boot
     return
 
 label game_boot:
-
+    $ Language(persistent.language)
     python:
         import random
         if persistent.language == "spanish":
@@ -432,6 +538,10 @@ label game_boot:
             selected_splash = random.choice(splash_FR)
         elif persistent.language == "russian":
             selected_splash = random.choice(splash_RU)
+        elif persistent.language == "japanese":
+            selected_splash = random.choice(splash_JP)
+        elif persistent.language == "korean":
+            selected_splash = random.choice(splash_KR)
         else:
             selected_splash = random.choice(splash_EN)
 
@@ -452,6 +562,16 @@ label game_boot:
 
     scene bg mainscreen with Dissolve(1.5)  # Replace with your main menu background
     $ renpy.pause(0.5, hard=True)
+    
+    # Halloween: October 30–31
+    if today.month == 10 and today.day in (30, 31) and not hiddenhalloween.has():
+        $ hiddenhalloween.grant()
+        $ renpy.pause(3.0, hard=True)
+
+    # Christmas: December 24–25
+    if today.month == 12 and today.day in (24, 25) and not hiddenchristmas.has():
+        $ hiddenchristmas.grant()
+        $ renpy.pause(3.0, hard=True)
 
     call screen loading_screen
 

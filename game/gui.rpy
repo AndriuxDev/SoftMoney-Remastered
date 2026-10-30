@@ -94,8 +94,27 @@ define gui.title_text_size = 75
 ## The images used for the main and game menus.
 define gui.main_menu_background = "images/menu.png"
 define gui.game_menu_background = "images/menu.png"
-define gui.main_menu_logo = "images/logoHD.png"
+
+init python:
+    def update_main_menu_logo():
+        lang = persistent.language
+
+        return {
+            "russian": "images/logos/logo-RU.png",
+            "spanish": "images/logos/logo-ES.png",
+            "english": "images/logos/logo-EN.png",
+            "french": "images/logos/logo-FR.png",
+            "japanese": "images/logos/logo-JP.png",
+            "korean": "images/logos/logo-KR.png",
+        }.get(lang, "images/logos/logo-EN.png") # fallback
+
+    gui.main_menu_logo = update_main_menu_logo()
+
+init python:
+    update_main_menu_logo()
+
 define gui.char_menu = "images/harveymenu.png"
+define gui.char_menu_empty = "images/harveymenuB.png"
 
 ## Dialogue ####################################################################
 ##
