@@ -4,7 +4,7 @@ translate russian strings:
 
     # game/options.rpy:15
     old "SoftMoney Remastered"
-    new "SoftMoney — ремастер"
+    new "SoftMoney Ремастер"
 
     # game/options.rpy:32
     old "This is a remastered fan-work in the spirit of paper-pepper's SoftMoney. All rights reserved to their respective owners. Non-profit proyect."

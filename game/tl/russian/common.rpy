@@ -1235,6 +1235,15 @@ translate russian strings:
     old "language_russian"
     new "Русский"
 
+    old "language_japanese"
+    new "Японский"
+
+    old "language_korean"
+    new "Корейский"
+
+    old "Doctor"
+    new "Врач"
+
     # Version control
     old "Version [config.version]"
     new "Версия [config.version]"

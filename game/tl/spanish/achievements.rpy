@@ -38,6 +38,20 @@ translate spanish strings:
     new "Compra un peine para Harvey con tu dinero."
     old "Harvey's hair is kept with care, a kind small gift shows you're there."
     new "Harvey cuida su cabello con esmero; un pequeño regalo alegrará su sendero."
+    
+    old "Trick or Treat?"
+    new "¡Dulce o travesura!"
+    old "Play the game during Halloween (October 30th-31st)."
+    new "Juega durante Noche de Brujas (30-31 de Octubre)."
+    old "When autumn nights grow dark and strange, a little visit might not feel so strange."
+    new "Cuando las noches de otoño se vuelven oscuras y misteriosas, una pequeña visita no parece tan extraña."
+    
+    old "A Little Christmas Magic"
+    new "Un poco de magia navideña"
+    old "Play the game during Christmas (December 24th-25th).."
+    new "Juega durante la Navidad (24-25 de Diciembre)."
+    old "When bells are ringing and snowflakes fall, a special surprise awaits those who call."
+    new "Cuando suenan las campanas y caen los copos de nieve, una sorpresa especial espera a quienes se acerquen."
 
     old "Reset All"
     new "Resetear Logros"

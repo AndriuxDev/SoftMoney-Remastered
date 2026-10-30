@@ -1234,3 +1234,9 @@ translate english strings:
 
     old "language_russian"
     new "Russian"
+
+    old "language_japanese"
+    new "Japanese"
+
+    old "language_korean"
+    new "Korean"

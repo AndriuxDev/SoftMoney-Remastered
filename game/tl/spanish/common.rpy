@@ -1235,6 +1235,12 @@ translate spanish strings:
     old "language_russian"
     new "Ruso"
 
+    old "language_japanese"
+    new "Japonés"
+
+    old "language_korean"
+    new "Coreano"
+
     # Version control
     old "Version [config.version]"
     new "Versión [config.version]"

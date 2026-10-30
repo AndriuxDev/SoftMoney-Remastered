@@ -1234,6 +1234,15 @@ translate french strings:
     old "language_russian"
     new "Russe"
 
+    old "language_japanese"
+    new "Japonais"
+
+    old "language_korean"
+    new "Coréen"
+
+    old "Doctor"
+    new "Médecin"
+
     # Version control
     old "Version [config.version]"
     new "Version [config.version]"

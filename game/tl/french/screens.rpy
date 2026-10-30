@@ -427,3 +427,12 @@ translate french strings:
 
     old "Tired of seeing Harvey suffer again and again? Think he deserves better? Then this game is for you! Same $25,000 operation, same roadside stall, same $1 per click—but with one big change: Harvey doesn't suffer anymore."
     new "Marre de voir Harvey souffrir encore et encore ? Vous pensez qu’il mérite mieux ? Alors ce jeu est pour vous ! La même opération à 25 000 $, le même stand au bord de la route, le même dollar par clic... mais avec un grand changement : Harvey ne souffre plus."
+
+    old "Return to the world of BLOODMONEY in Requiem, a psychological horror experience from SHROOMYCHRIST. Step into a disturbing new chapter where every choice comes at a cost."
+    new "Retournez dans l’univers de BLOODMONEY avec Requiem, une expérience d’horreur psychologique signée SHROOMYCHRIST. Plongez dans un nouveau chapitre troublant où chaque choix a un prix."
+    
+    old "Get BLOODMONEY: Requiem on Steam!"
+    new "Découvrez BLOODMONEY: Requiem sur Steam !"
+    
+    old "This game contains... {color=#B5121B}psychological horror, disturbing themes, and unsettling content{/color}.\nYour choices may have consequences.\nAre you sure you want to proceed?"
+    new "Ce jeu contient... {color=#B5121B}de l'horreur psychologique, des thèmes troublants et du contenu dérangeant{/color}.\nVos choix peuvent avoir des conséquences.\nVoulez-vous vraiment continuer ?"

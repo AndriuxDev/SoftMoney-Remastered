@@ -36,6 +36,24 @@ translate french strings:
     new "Achetez un peigne pour Harvey avec votre argent."
     old "Harvey's hair is kept with care, a kind small gift shows you're there."
     new "Harvey soigne ses cheveux avec soin ; un petit cadeau mettra du soleil sur son chemin."
+    
+    old "Trick or Treat?"
+    new "Des bonbons ou un sort !"
+
+    old "Play the game during Halloween (October 30th-31st)."
+    new "Jouez pendant Halloween (du 30 au 31 octobre)."
+
+    old "When autumn nights grow dark and strange, a little visit might not feel so strange."
+    new "Lorsque les nuits d'automne deviennent sombres et mystérieuses, une petite visite n'a rien de si étrange."
+
+    old "A Little Christmas Magic"
+    new "Un peu de magie de Noël"
+
+    old "Play the game during Christmas (December 24th-25th).."
+    new "Jouez pendant Noël (du 24 au 25 décembre)."
+
+    old "When bells are ringing and snowflakes fall, a special surprise awaits those who call."
+    new "Quand les cloches sonnent et que les flocons tombent, une surprise spéciale attend ceux qui viennent."
 
     old "Reset All"
     new "Réinitialiser les succès"

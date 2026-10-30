@@ -36,6 +36,24 @@ translate russian strings:
     new "Купите расческу для Харви на свои деньги."
     old "Harvey's hair is kept with care, a kind small gift shows you're there."
     new "Харви заботится о волосах с любовью; маленький подарок принесёт радость в его жизнь."
+    
+    old "Trick or Treat?"
+    new "Сладость или гадость!"
+
+    old "Play the game during Halloween (October 30th-31st)."
+    new "Сыграйте в игру на Хэллоуин (30–31 октября)."
+
+    old "When autumn nights grow dark and strange, a little visit might not feel so strange."
+    new "Когда осенние ночи становятся тёмными и загадочными, чей-то неожиданный визит уже не кажется таким странным."
+
+    old "A Little Christmas Magic"
+    new "Немного рождественского волшебства"
+
+    old "Play the game during Christmas (December 24th-25th).."
+    new "Сыграйте в игру на Рождество (24–25 декабря)."
+
+    old "When bells are ringing and snowflakes fall, a special surprise awaits those who call."
+    new "Когда звенят колокольчики и падают снежинки, тех, кто заглянет в гости, ждёт особенный сюрприз."
 
     old "Reset All"
     new "Сбросить достижения"

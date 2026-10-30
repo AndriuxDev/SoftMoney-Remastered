@@ -430,3 +430,12 @@ translate russian strings:
 
     old "Tired of seeing Harvey suffer again and again? Think he deserves better? Then this game is for you! Same $25,000 operation, same roadside stall, same $1 per click—but with one big change: Harvey doesn't suffer anymore."
     new "Устали смотреть, как Харви снова и снова страдает? Думаете, он заслуживает лучшего? Тогда эта игра для вас! Та же операция за 25 000 $, тот же придорожный ларёк, тот же доллар за клик — но с одним большим изменением: Харви больше не страдает."
+
+    old "Return to the world of BLOODMONEY in Requiem, a psychological horror experience from SHROOMYCHRIST. Step into a disturbing new chapter where every choice comes at a cost."
+    new "Вернитесь в мир BLOODMONEY в игре Requiem — психологическом хорроре от SHROOMYCHRIST. Вас ждет новая, тревожная глава, в которой за каждый выбор придется заплатить свою цену."
+
+    old "Get BLOODMONEY: Requiem on Steam!"
+    new "Приобретите BLOODMONEY: Requiem в Steam!"
+    
+    old "This game contains... {color=#B5121B}psychological horror, disturbing themes, and unsettling content{/color}.\nYour choices may have consequences.\nAre you sure you want to proceed?"
+    new "Эта игра содержит... {color=#B5121B}психологический хоррор, тревожные темы и пугающий контент{/color}.\nВаш выбор может иметь последствия.\nВы уверены, что хотите продолжить?"
