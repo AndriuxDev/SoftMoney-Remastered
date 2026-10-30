@@ -61,7 +61,7 @@ SoftMoney Remastered currently supports:
 - 🇷🇺 Russian  
 - 🇲🇽 Spanish / 🇪🇸 Spanish (Spain)  
 - 🇫🇷 French  
-- 🌍 More languages coming soon!
+- **New languages:** 🇰🇷 Korean and 🇯🇵 Japanese are now available!
 
 If you’d like to help translate, check the [`/game/tl/`](./game/tl) folder for localization templates.
 
